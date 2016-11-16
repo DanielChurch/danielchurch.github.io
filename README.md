@@ -1,2 +1,1 @@
-danielchurch.github.io
-Professional Website
+http://danielchurch.github.io
