@@ -1,2 +1,2 @@
-# danielchurch.github.io
+danielchurch.github.io
 Professional Website
