@@ -135,14 +135,14 @@ a.notificationIcons:hover span{
 	width: 32px;
 	height: 32px;
 }
-#footer_menu .youtube{
+#footer_menu .linkedin{
 	padding: 5px 8px 0px 14px;
 	border: none;
 	border-right: 1px solid rgba(0,0,0,0.4);
 	background: none;
 }
-#footer_menu .youtube a{
-	background: url("youtube.png") top left no-repeat;
+#footer_menu .linkedin a{
+	background: url("linkedin.png") top left no-repeat;
 	width: 32px;
 	height: 32px;
 }
@@ -154,17 +154,6 @@ a.notificationIcons:hover span{
 }
 #footer_menu .git a{
 	background: url("github.png") top left no-repeat;
-	width: 32px;
-	height: 32px;
-}
-#footer_menu .twitch{
-	padding: 5px 8px 0px 14px;
-	border: none;
-	border-right: 1px solid rgba(0,0,0,0.4);
-	background: none;
-}
-#footer_menu .twitch a{
-	background: url("twitch.png") top left no-repeat;
 	width: 32px;
 	height: 32px;
 }

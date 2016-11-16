@@ -1,5 +1,5 @@
 body{
-	background:url("wallpaper_gold_rush.jpg") repeat;
+	background:url("background.jpg") repeat;
 	padding-top: 40px;
 }
 li{
@@ -17,7 +17,7 @@ a:hover{
 }
 h1{
 	color: #FFFFFF;
-	text-shadow: 0 0 0.05em #fff, 0 0 .1em #fff, 0 0 0.15em #fff, 0 0 .2em #CD006F,0 0 .3em #D91700, 0 0 .4em #D91700, 0 0 .5em #D91700, 0 0 0.6em #D91700;
+	/*text-shadow: 0 0 0.05em #fff, 0 0 .1em #fff, 0 0 0.15em #fff, 0 0 .2em #CD006F,0 0 .3em #D91700, 0 0 .4em #D91700, 0 0 .5em #D91700, 0 0 0.6em #D91700;*/
 }
 p{
 	padding: 0px;
