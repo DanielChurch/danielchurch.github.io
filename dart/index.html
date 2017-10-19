@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>WebGL - Fundamentals</title>
+    <link type="text/css" href="../resources/webgl-tutorials.css" rel="stylesheet" />
+    <!-- vertex shader -->
+	<script id="v2d-vertex-shader" type="x-shader/x-vertex">
+	attribute vec2 a_position;
+	void main() {
+	   gl_Position = vec4(a_position, 0, 1);
+	}
+	</script>
+	<!-- fragment shader -->
+	<script id="f2d-fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+
+	#define ITER 20
+
+    void main( void ) {
+        vec2 z = (gl_FragCoord.xy / vec2(800., 600.) - vec2(.5, .5)) * 2.0;
+        vec2 c = vec2(0.5, 0.5);
+
+        int iters = 0;
+
+        for (int i = 0; i < ITER; i++) {
+            z = vec2(z.x * z.x - z.y * z.y, 2. * z.x * z.y) + c;
+            iters++;
+            if (dot(z, z) > 4.) {
+                break;
+            }
+        }
+        gl_FragColor = vec4(((float(iters) / float(ITER)) * vec3(1.,0.,1.)), 1.);
+    }
+
+	</script>
+  </head>
+  <body>
+    <h1>WebGL - Fundamentals</h1>
+    <script type="application/dart" src="fundamentals.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+	<canvas id="canvas" width="800" height="600"></canvas>
+  </body>
+</html>
