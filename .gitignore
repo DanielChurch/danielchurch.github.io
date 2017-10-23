@@ -2,6 +2,9 @@
 **/.idea/**
 
 // Dart Artifacts
+**/.pub/**
+**/build/**
 **/packages/**
+**/.packages
 
 bin/
