@@ -3,7 +3,10 @@
 
 // Dart Artifacts
 **/.pub/**
-**/packages/**
+dart/Monopoly/packages/**
+dart/Monopoly/web/**/packages/**
+dart/Monopoly/lib/**/packages/**
+dart/Monopoly/tool/**/packages/**
 **/.packages
 
 bin/
