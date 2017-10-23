@@ -1,0 +1,7 @@
+// IntelliJ Files
+**/.idea/**
+
+// Dart Artifacts
+**/packages/**
+
+bin/
