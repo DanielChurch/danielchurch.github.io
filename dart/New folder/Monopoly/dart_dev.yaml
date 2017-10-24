@@ -1,0 +1,4 @@
+coverage:
+  report_on:
+    - bin/
+    - lib/
