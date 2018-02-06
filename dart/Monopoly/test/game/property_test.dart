@@ -1,6 +1,8 @@
+import 'package:monopoly/game/board.dart';
 import 'package:monopoly/game/color.dart';
-import 'package:monopoly/game/property.dart';
 import 'package:monopoly/game/player.dart';
+import 'package:monopoly/game/property.dart';
+import 'package:monopoly/game/tile.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -96,6 +98,18 @@ void main() {
       test('takes the correct amount based on the number of houses', () {
         property.isHotel = true;
         testBalanceFromNumberOfHouses(5);
+      });
+
+      test('takes the correct amount for railroad', () {
+        Board.tiles = [new Tile(property: property = new Property(200, [1, 2, 3], Color.railroad))];
+        property.owner = owner;
+        property.payRent(player, 2);
+      });
+
+      test('takes the correct amount for utility', () {
+        Board.tiles = [new Tile(property: property = new Property(200, [1, 2, 3], Color.utility))];
+        property.owner = owner;
+        property.payRent(player, 2);
       });
     });
 
@@ -404,6 +418,105 @@ void main() {
         expect(property.isMortgaged, isTrue);
         property.payMortgage();
         expect(property.isMortgaged, isFalse);
+      });
+    });
+
+    group('tradeMortgage', () {
+      int ownerBaseBalance;
+      int playerBaseBalance;
+      Property property2;
+
+      setUp(() {
+        property.owner = owner;
+        property.mortgage();
+        ownerBaseBalance = owner.balance;
+
+        property2 = new Property(20, [1, 2, 3, 4, 5], Color.purple);
+        property2.owner = player;
+        property2.mortgage();
+        playerBaseBalance = player.balance;
+      });
+
+      group('does nothing and returns false if', () {
+        test('the first property is not owned', () {
+          property.owner = null;
+          expect(property.tradeMortgage(property2, false), isFalse);
+        });
+
+        test('the second property is not owned', () {
+          property2.owner = null;
+          expect(property.tradeMortgage(property2, false), isFalse);
+        });
+
+        test('the first property is not mortgaged', () {
+          property.payMortgage();
+          expect(property.tradeMortgage(property2, false), isFalse);
+        });
+
+        test('the second property is not mortgaged', () {
+          property2.payMortgage();
+          expect(property.tradeMortgage(property2, false), isFalse);
+        });
+
+        group('pay immediately is chosen and', () {
+          test("the first player does'nt have enough money", () {
+            owner.balance = 0;
+            expect(property.tradeMortgage(property2, true), isFalse);
+          });
+
+          test("the second player does'nt have enough money", () {
+            player.balance = 0;
+            expect(property.tradeMortgage(property2, true), isFalse);
+          });
+        });
+
+        group('pay later is chosen and', () {
+          test("the first player does'nt have enough money", () {
+            owner.balance = 0;
+            expect(property.tradeMortgage(property2, false), isFalse);
+          });
+
+          test("the second player does'nt have enough money", () {
+            player.balance = 0;
+            expect(property.tradeMortgage(property2, false), isFalse);
+          });
+        });
+
+        group('takes the correct amount of money from', () {
+          test("the first player", () {
+
+          });
+
+          test("the second player", () {
+
+          });
+        });
+
+        group('switches the properties', () {
+          test("and keeps them mortgaged if pay later is chosen", () {
+            expect(property.owner, owner);
+            expect(property.isMortgaged, isTrue);
+            expect(property2.owner, player);
+            expect(property2.isMortgaged, isTrue);
+            property.tradeMortgage(property2, false);
+            expect(property.owner, player);
+            expect(property.isMortgaged, isTrue);
+            expect(property2.owner, owner);
+            expect(property2.isMortgaged, isTrue);
+          });
+
+          test("and removes the mortgage if pay now is chosen", () {
+            expect(property.owner, owner);
+            expect(property.isMortgaged, isTrue);
+            expect(property2.owner, player);
+            expect(property2.isMortgaged, isTrue);
+            property.tradeMortgage(property2, true);
+            expect(property.owner, player);
+            expect(property.isMortgaged, isFalse);
+            expect(property2.owner, owner);
+            expect(property2.isMortgaged, isFalse);
+          });
+        });
       });
     });
   });

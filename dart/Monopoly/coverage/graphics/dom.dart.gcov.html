@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - graphics/dom.dart</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">graphics</a> - dom.dart<span style="font-size: 80%;"> (source / <a href="dom.dart.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryMed">85.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-11-14 14:50:34</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : import 'dart:html';</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : typedef Element OnCall(List);
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : class VariadicFunction implements Function {
+<span class="lineNum">       6 </span>            :   OnCall _onCall;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span><span class="lineCov">          4 :   VariadicFunction(this._onCall);</span>
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span><span class="lineCov">         12 :   call() =&gt; _onCall([]);</span>
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            :   @override
+<span class="lineNum">      13 </span>            :   noSuchMethod(Invocation invocation) {
+<span class="lineNum">      14 </span><span class="lineCov">          2 :     final arguments = invocation.positionalArguments;</span>
+<span class="lineNum">      15 </span><span class="lineCov">          6 :     if (invocation.positionalArguments[0] is List) {</span>
+<span class="lineNum">      16 </span><span class="lineCov">          6 :       return _onCall(arguments[0]);</span>
+<span class="lineNum">      17 </span>            :     } else {
+<span class="lineNum">      18 </span><span class="lineCov">          4 :       return _onCall(arguments);</span>
+<span class="lineNum">      19 </span>            :     }
+<span class="lineNum">      20 </span>            :   }
+<span class="lineNum">      21 </span>            : }
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : class Dom extends Element {
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span><span class="lineNoCov">          0 :   factory Dom._() =&gt; new Element.div();</span>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :   static Element _setUpDomChildren(Element e, List&lt;dynamic&gt; children) {
+<span class="lineNum">      28 </span><span class="lineCov">          4 :     if (e is InputElement)</span>
+<span class="lineNum">      29 </span><span class="lineCov">          5 :       children.where((c) =&gt; c is String).forEach((c) =&gt; e.value += c);</span>
+<span class="lineNum">      30 </span>            :     else
+<span class="lineNum">      31 </span><span class="lineCov">         12 :       children.where((c) =&gt; c is String).forEach((c) =&gt; e.text += c);</span>
+<span class="lineNum">      32 </span><span class="lineCov">         14 :     children.where((c) =&gt; !(c is String)).forEach(e.append);</span>
+<span class="lineNum">      33 </span>            :     return e;
+<span class="lineNum">      34 </span>            :   }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :   static final Function a = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.a(), children) : new Element.a());
+<span class="lineNum">      37 </span>            :   static final Function article = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.article(), children) : new Element.article());
+<span class="lineNum">      38 </span>            :   static final Function aside = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.aside(), children) : new Element.aside());
+<span class="lineNum">      39 </span>            :   static final Function audio = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.audio(), children) : new Element.audio());
+<span class="lineNum">      40 </span><span class="lineCov">          6 :   static final Function body = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(document.body, children) : document.body);</span>
+<span class="lineNum">      41 </span>            :   static final Function br = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.br(), children) : new Element.br());
+<span class="lineNum">      42 </span>            :   static final Function canvas = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.canvas(), children) : new Element.canvas());
+<span class="lineNum">      43 </span><span class="lineCov">          4 :   static final Function div = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.div(), children) : new Element.div());</span>
+<span class="lineNum">      44 </span>            :   static final Function footer = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.footer(), children) : new Element.footer());
+<span class="lineNum">      45 </span>            :   static final Function header = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.header(), children) : new Element.header());
+<span class="lineNum">      46 </span>            :   static final Function hr = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.hr(), children) : new Element.hr());
+<span class="lineNum">      47 </span>            :   static final Function iframe = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.iframe(), children) : new Element.iframe());
+<span class="lineNum">      48 </span><span class="lineCov">          8 :   static final Function img = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.img(), children) : new Element.img());</span>
+<span class="lineNum">      49 </span>            :   static final Function li = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.li(), children) : new Element.li());
+<span class="lineNum">      50 </span>            :   static final Function nav = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.nav(), children) : new Element.nav());
+<span class="lineNum">      51 </span>            :   static final Function ol = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.ol(), children) : new Element.ol());
+<span class="lineNum">      52 </span>            :   static final Function option = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.option(), children) : new Element.option());
+<span class="lineNum">      53 </span><span class="lineCov">          2 :   static final Function p = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.p(), children) : new Element.p());</span>
+<span class="lineNum">      54 </span>            :   static final Function pre = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.pre(), children) : new Element.pre());
+<span class="lineNum">      55 </span>            :   static final Function section = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.section(), children) : new Element.section());
+<span class="lineNum">      56 </span>            :   static final Function select = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.select(), children) : new Element.select());
+<span class="lineNum">      57 </span><span class="lineCov">          2 :   static final Function span = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.span(), children) : new Element.span());</span>
+<span class="lineNum">      58 </span>            :   static final Function svg = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.svg(), children) : new Element.svg());
+<span class="lineNum">      59 </span>            :   static final Function table = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.table(), children) : new Element.table());
+<span class="lineNum">      60 </span>            :   static final Function td = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.td(), children) : new Element.td());
+<span class="lineNum">      61 </span>            :   static final Function textarea = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.textarea(), children) : new Element.textarea());
+<span class="lineNum">      62 </span>            :   static final Function th = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.th(), children) : new Element.th());
+<span class="lineNum">      63 </span>            :   static final Function tr = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.tr(), children) : new Element.tr());
+<span class="lineNum">      64 </span>            :   static final Function ul = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.ul(), children) : new Element.ul());
+<span class="lineNum">      65 </span>            :   static final Function video = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ? _setUpDomChildren(new Element.video(), children) : new Element.video());
+<span class="lineNum">      66 </span><span class="lineCov">          6 :   static final Function figure = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ?  _setUpDomChildren(document.createElement('FIGURE'), children) : document.createElement('FIGURE'));</span>
+<span class="lineNum">      67 </span><span class="lineCov">          3 :   static final Function input = new VariadicFunction(([List&lt;dynamic&gt; children]) =&gt; children != null ?  _setUpDomChildren(document.createElement('input'), children) : document.createElement('input'));</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :   static Element byId(String id) =&gt; querySelector('#$id');</span>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :   static Element byClass(String id) =&gt; querySelector('.$id');</span>
+<span class="lineNum">      72 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

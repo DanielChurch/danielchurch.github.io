@@ -27,5 +27,16 @@ void main() {
         expect(tile.isProperty, isFalse);
       });
     });
+
+    test("type returns the tile's _type", () {
+
+    });
+
+    group('graphics', () {
+      test('render', () {
+
+      });
+    });
+
   });
 }

@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - game/tile.dart</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">game</a> - tile.dart<span style="font-size: 80%;"> (source / <a href="tile.dart.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">44</td>
+            <td class="headerCovTableEntryLo">22.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-11-14 14:50:34</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : import 'dart:html';</a>
+<span class="lineNum">       2 </span>            : import 'dart:math';
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : import 'package:meta/meta.dart';
+<span class="lineNum">       5 </span>            : import 'package:monopoly/graphics/dom.dart';
+<span class="lineNum">       6 </span>            : import 'package:monopoly/graphics/graphics.dart';
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : import 'color.dart';
+<span class="lineNum">       9 </span>            : import 'tile_type.dart';
+<span class="lineNum">      10 </span>            : import 'property.dart';
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : export 'tile_type.dart';
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : class Tile {
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :   /// The current scale of the tiles on the board
+<span class="lineNum">      17 </span>            :   static int tileScale = 96;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            :   TileType _type;
+<span class="lineNum">      20 </span>            :   Property _property;
+<span class="lineNum">      21 </span>            :   /// [x] and [y] coordinates on the board
+<span class="lineNum">      22 </span>            :   int x, y;
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :   /// A Map of tile _types and images that are loaded
+<span class="lineNum">      25 </span>            :   static Map&lt;TileType, ImageElement&gt; preloadedImageMap = {
+<span class="lineNum">      26 </span>            :     TileType.property: Dom.img()..src = 'res/images/house.png',
+<span class="lineNum">      27 </span>            :     TileType.freeParking: Dom.img()..src = 'res/images/freeparking1.png',
+<span class="lineNum">      28 </span>            :     TileType.go: Dom.img()..src = 'res/images/go.png',
+<span class="lineNum">      29 </span>            :     TileType.jail: Dom.img()..src = 'res/images/jail.jpg',
+<span class="lineNum">      30 </span>            :     TileType.railroad: Dom.img()..src = 'res/images/railway.png',
+<span class="lineNum">      31 </span>            :     TileType.utility: Dom.img()..src = 'res/images/plumbus.png',
+<span class="lineNum">      32 </span>            :   };
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :   static ImageElement mortgagedImage = Dom.img()..src = 'res/images/mortgage.png';
+<span class="lineNum">      35 </span>            :   static ImageElement hotelImage = Dom.img()..src = 'res/images/hotel2.png';
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span><span class="lineCov">          5 :   Tile({TileType type, Property property}) : _type = type, _property = property {</span>
+<span class="lineNum">      38 </span><span class="lineCov">          5 :     if (_property != null) {</span>
+<span class="lineNum">      39 </span><span class="lineCov">         15 :       if (_property.color == Color.railroad) {</span>
+<span class="lineNum">      40 </span><span class="lineCov">          4 :         _type = TileType.railroad;</span>
+<span class="lineNum">      41 </span><span class="lineCov">         15 :       } else if (_property.color == Color.utility) {</span>
+<span class="lineNum">      42 </span><span class="lineCov">          4 :         _type = TileType.utility;</span>
+<span class="lineNum">      43 </span>            :       } else {
+<span class="lineNum">      44 </span><span class="lineCov">          4 :         _type = TileType.property;</span>
+<span class="lineNum">      45 </span>            :       }
+<span class="lineNum">      46 </span>            :     }
+<span class="lineNum">      47 </span>            :   }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :   TileType get type =&gt; _type;</span>
+<span class="lineNum">      50 </span><span class="lineCov">          2 :   Property get property =&gt; _property;</span>
+<span class="lineNum">      51 </span><span class="lineCov">         18 :   bool get isProperty =&gt; _type == TileType.property || _type == TileType.railroad || _type == TileType.utility;</span>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :   @visibleForTesting
+<span class="lineNum">      54 </span><span class="lineCov">          1 :   set type(TileType type) =&gt; _type = type;</span>
+<span class="lineNum">      55 </span>            :   @visibleForTesting
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :   set property(Property property) =&gt; _property = property;</span>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :   /// Renders each [Tile] on the board
+<span class="lineNum">      59 </span>            :   void render(Graphics g, int x, int y, double delta) {
+<span class="lineNum">      60 </span>            :     // Background
+<span class="lineNum">      61 </span>            :     String color;
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :     switch(_property?.color ?? Color.utility) {</span>
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :       case Color.brown: color = 'brown'; break;</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :       case Color.lightBlue: color = 'blue'; break;</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :       case Color.purple: color = 'purple'; break;</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :       case Color.orange: color = 'orange'; break;</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :       case Color.red: color = 'red'; break;</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :       case Color.yellow: color = 'yellow'; break;</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :       case Color.green: color = 'green'; break;</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :       case Color.darkBlue: color = 'navy'; break;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :       case Color.utility: color = 'teal'; break;</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :       case Color.railroad: color = 'pink'; break;</span>
+<span class="lineNum">      74 </span>            :     }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     g.setFillColor(color ?? 'rgb(${new Random().nextInt(255)}, ${new Random().nextInt(255)}, ${new Random().nextInt(255)})');</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     g.fillRect(x * tileScale, y * tileScale, tileScale, tileScale);</span>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :     // Border
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     g.setColor('rgb(0, 0, 0)');</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);</span>
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :     // Tile Image
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     if (_property?.isMortgaged == true) {</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :       g.drawPreloadedImage(mortgagedImage, x * tileScale, y * tileScale, tileScale, tileScale);</span>
+<span class="lineNum">      86 </span>            :     } else {
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :       g.drawPreloadedImage(preloadedImageMap[_type], x * tileScale, y * tileScale, tileScale, tileScale);</span>
+<span class="lineNum">      88 </span>            :     }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     if (_property?.isHotel == true) {</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :       g.drawPreloadedImage(hotelImage, x * tileScale, y * tileScale, tileScale, tileScale);</span>
+<span class="lineNum">      92 </span>            :     }
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :     // Owner
+<span class="lineNum">      95 </span>            :     int xOffset = 0;
+<span class="lineNum">      96 </span>            :     int yOffset = 0;
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     if (isProperty &amp;&amp; _property.isOwned) {</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :       if (x == 0) {</span>
+<span class="lineNum">     100 </span>            :         xOffset = tileScale;
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         yOffset = tileScale ~/ 3;</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :       } else if (y == 0) {</span>
+<span class="lineNum">     103 </span>            :         yOffset = tileScale;
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         xOffset = tileScale ~/ 3;</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :       } else if (x == 10) {</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         xOffset = -tileScale ~/ 4;</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         yOffset = tileScale ~/ 3;</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :       } else if (y == 10) {</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         yOffset = -tileScale ~/ 4;</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         xOffset = tileScale ~/ 3;</span>
+<span class="lineNum">     111 </span>            :       }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :       g.drawPreloadedImage(_property.owner.token, x * tileScale + xOffset, y * tileScale + yOffset, tileScale / 4, tileScale / 4);</span>
+<span class="lineNum">     114 </span>            :     }
+<span class="lineNum">     115 </span>            :   }
+<span class="lineNum">     116 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -113,7 +113,7 @@ class Dice {
        translateX(${_position.x}vh)
        translateY(${_position.y}vh)
        translateZ(${_position.z}vh)
-       
+
        rotateX(${_rotation.x}deg)
        rotateY(${_rotation.y}deg)
        rotateZ(${_rotation.z}deg)

@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - game/dice.dart</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">game</a> - dice.dart<span style="font-size: 80%;"> (source / <a href="dice.dart.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-11-14 14:50:34</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : import 'dart:async';</a>
+<span class="lineNum">       2 </span>            : import 'dart:math';
+<span class="lineNum">       3 </span>            : import 'dart:html';
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : import 'package:monopoly/graphics/dom.dart';
+<span class="lineNum">       6 </span>            : import 'package:vector_math/vector_math.dart';
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : class Dice {
+<span class="lineNum">       9 </span>            :   Vector3 _position;
+<span class="lineNum">      10 </span>            :   Vector3 _rotation;
+<span class="lineNum">      11 </span>            :   Vector3 _velocity;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            :   /// The element containing the dice
+<span class="lineNum">      14 </span>            :   Element _cube;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :   Random random = new Random();
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            :   /// Constructs a Dice at the given position ([x], [y], [z]), optionally in the given [container]
+<span class="lineNum">      19 </span>            :   Dice(num x, num y, num z, {Element container})
+<span class="lineNum">      20 </span><span class="lineCov">          2 :       : _position = new Vector3(x, 0.0, 0.0),</span>
+<span class="lineNum">      21 </span><span class="lineCov">          2 :         _velocity = new Vector3(0.0, 0.0, 0.0),</span>
+<span class="lineNum">      22 </span><span class="lineCov">          4 :         _rotation = new Vector3(0.0, 0.0, 0.0) {</span>
+<span class="lineNum">      23 </span><span class="lineCov">          1 :     container = container ?? Dom.body();</span>
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :     // Add the dom elements to the container
+<span class="lineNum">      26 </span><span class="lineCov">          4 :     container.append(this._cube =</span>
+<span class="lineNum">      27 </span><span class="lineCov">          2 :     Dom.div(</span>
+<span class="lineNum">      28 </span><span class="lineCov">          4 :         ['one', 'two', 'three', 'four', 'five', 'six'].map((className) =&gt;</span>
+<span class="lineNum">      29 </span><span class="lineCov">          2 :         Dom.figure(</span>
+<span class="lineNum">      30 </span><span class="lineCov">          2 :             Dom.img()</span>
+<span class="lineNum">      31 </span><span class="lineCov">          2 :               ..src = 'res/images/dice-$className.png'</span>
+<span class="lineNum">      32 </span><span class="lineCov">          4 :               ..className = 'cube'</span>
+<span class="lineNum">      33 </span>            :         )
+<span class="lineNum">      34 </span><span class="lineCov">          6 :           ..className = '$className').toList()</span>
+<span class="lineNum">      35 </span>            :     )
+<span class="lineNum">      36 </span><span class="lineCov">          2 :       ..id = 'cube'</span>
+<span class="lineNum">      37 </span>            :     );
+<span class="lineNum">      38 </span>            :   }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :   /// Spin the dice and get a random number
+<span class="lineNum">      41 </span>            :   /// Optionally input:
+<span class="lineNum">      42 </span>            :   ///   - [value] to guarantee rolling that value,
+<span class="lineNum">      43 </span>            :   ///   - [time] to specify how long it will spin for
+<span class="lineNum">      44 </span>            :   ///   - [upVelocity] to specify how far up it will launch
+<span class="lineNum">      45 </span>            :   int spin({int value, Duration time = const Duration(
+<span class="lineNum">      46 </span>            :       milliseconds: 1100), double upVelocity = -0.91996320147194112235510579576817}) {
+<span class="lineNum">      47 </span>            :     // Make random _rotation to make the dice spin
+<span class="lineNum">      48 </span><span class="lineCov">          2 :     if (time.inMilliseconds != 0) {</span>
+<span class="lineNum">      49 </span><span class="lineCov">          5 :       _rotation.x = random.nextDouble() * 100000;</span>
+<span class="lineNum">      50 </span><span class="lineCov">          5 :       _rotation.y = random.nextDouble() * 100000;</span>
+<span class="lineNum">      51 </span><span class="lineCov">          5 :       _rotation.z = random.nextDouble() * 100000;</span>
+<span class="lineNum">      52 </span>            :     }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :     // get a random number for the dice to land on when it lands
+<span class="lineNum">      55 </span><span class="lineCov">          3 :     int result = value ?? random.nextInt(6) + 1;</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :     // Let the dice spin randomly, then in 1 second set it on path to
+<span class="lineNum">      58 </span>            :     // get to the desired rotate for the calculated random number
+<span class="lineNum">      59 </span><span class="lineCov">          2 :     new Future.delayed(time).then((_) {</span>
+<span class="lineNum">      60 </span>            :       switch (result) {
+<span class="lineNum">      61 </span><span class="lineCov">          1 :         case 1: // Face 1</span>
+<span class="lineNum">      62 </span><span class="lineCov">          6 :           _rotation.x = _rotation.y = _rotation.z = 0.0;</span>
+<span class="lineNum">      63 </span>            :           break;
+<span class="lineNum">      64 </span><span class="lineCov">          1 :         case 2: // Face 2</span>
+<span class="lineNum">      65 </span><span class="lineCov">          2 :           _rotation.x = 180.0;</span>
+<span class="lineNum">      66 </span><span class="lineCov">          2 :           _rotation.y = 0.0;</span>
+<span class="lineNum">      67 </span><span class="lineCov">          2 :           _rotation.z = 0.0;</span>
+<span class="lineNum">      68 </span>            :           break;
+<span class="lineNum">      69 </span><span class="lineCov">          1 :         case 3: // Face 3</span>
+<span class="lineNum">      70 </span><span class="lineCov">          2 :           _rotation.x = 0.0;</span>
+<span class="lineNum">      71 </span><span class="lineCov">          2 :           _rotation.y = 270.0;</span>
+<span class="lineNum">      72 </span><span class="lineCov">          2 :           _rotation.z = 0.0;</span>
+<span class="lineNum">      73 </span>            :           break;
+<span class="lineNum">      74 </span><span class="lineCov">          1 :         case 4: // Face 4</span>
+<span class="lineNum">      75 </span><span class="lineCov">          2 :           _rotation.x = 0.0;</span>
+<span class="lineNum">      76 </span><span class="lineCov">          2 :           _rotation.y = 90.0;</span>
+<span class="lineNum">      77 </span><span class="lineCov">          2 :           _rotation.z = 0.0;</span>
+<span class="lineNum">      78 </span>            :           break;
+<span class="lineNum">      79 </span><span class="lineCov">          1 :         case 5: // Face 5</span>
+<span class="lineNum">      80 </span><span class="lineCov">          2 :           _rotation.x = 270.0;</span>
+<span class="lineNum">      81 </span><span class="lineCov">          2 :           _rotation.y = 0.0;</span>
+<span class="lineNum">      82 </span><span class="lineCov">          2 :           _rotation.z = 0.0;</span>
+<span class="lineNum">      83 </span>            :           break;
+<span class="lineNum">      84 </span><span class="lineCov">          1 :         case 6: // Face 6</span>
+<span class="lineNum">      85 </span><span class="lineCov">          2 :           _rotation.x = 90.0;</span>
+<span class="lineNum">      86 </span><span class="lineCov">          2 :           _rotation.y = 0.0;</span>
+<span class="lineNum">      87 </span><span class="lineCov">          2 :           _rotation.z = 0.0;</span>
+<span class="lineNum">      88 </span>            :           break;
+<span class="lineNum">      89 </span>            :       }
+<span class="lineNum">      90 </span>            :     });
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :     // Give the dice a force to rocket into the air
+<span class="lineNum">      93 </span><span class="lineCov">          2 :     _velocity.y = upVelocity;</span>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :     return result;
+<span class="lineNum">      96 </span>            :   }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :   /// Updates the graphical logic of the dice (translation based on gravity and force)
+<span class="lineNum">      99 </span>            :   void update() {
+<span class="lineNum">     100 </span><span class="lineCov">          3 :     _velocity.y += 0.00902483900643974241030358785649;</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineCov">          3 :     _position += _velocity;</span>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">          3 :     if (_position.y &gt;= 0) {</span>
+<span class="lineNum">     105 </span><span class="lineCov">          2 :       _position.y = 0.0;</span>
+<span class="lineNum">     106 </span><span class="lineCov">          2 :       _velocity.y = 0.0;</span>
+<span class="lineNum">     107 </span>            :     }
+<span class="lineNum">     108 </span>            :   }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :   /// Renders the dice with it's current transform (translation, scale)
+<span class="lineNum">     111 </span>            :   void render(num delta) =&gt;
+<span class="lineNum">     112 </span><span class="lineCov">          3 :       _cube.style.transform = '''</span>
+<span class="lineNum">     113 </span><span class="lineCov">          2 :        translateX(${_position.x}vh)</span>
+<span class="lineNum">     114 </span><span class="lineCov">          2 :        translateY(${_position.y}vh)</span>
+<span class="lineNum">     115 </span><span class="lineCov">          2 :        translateZ(${_position.z}vh)</span>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">          2 :        rotateX(${_rotation.x}deg)</span>
+<span class="lineNum">     118 </span><span class="lineCov">          2 :        rotateY(${_rotation.y}deg)</span>
+<span class="lineNum">     119 </span><span class="lineCov">          2 :        rotateZ(${_rotation.z}deg)</span>
+<span class="lineNum">     120 </span><span class="lineCov">          1 :     ''';</span>
+<span class="lineNum">     121 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
