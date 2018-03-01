@@ -199,7 +199,6 @@ class Main {
     private fun modelDemo() {
         currentDemo = "modelDemo"
         val engine = Engine()
-        Engine.camera = FirstPersonCamera()
 
         val model = ModelLoader.loadObj("models/TropicalFish15.obj", texture = ModelLoader.loadTexture("models/TropicalFish15.jpg"))
         model.position.z = -4f

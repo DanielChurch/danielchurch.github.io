@@ -413,7 +413,6 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   Main.prototype.modelDemo_0 = function () {
     this.currentDemo_0 = 'modelDemo';
     var engine = new Engine();
-    Engine$Companion_getInstance().camera = new FirstPersonCamera();
     var model = ModelLoader$Companion_getInstance().loadObj_jpwrlx$('models/TropicalFish15.obj', ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/TropicalFish15.jpg'));
     model.position.z = -4.0;
     engine.add_3ifc4f$(model);
