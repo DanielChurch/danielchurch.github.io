@@ -91,7 +91,7 @@ class Main {
             Triple("Model", { modelDemo() }, "#f44336"),
             Triple("FPS Camera", { fpsCamDemo() }, "orange"),
             Triple("Animation", { videoDemo() }, "#430297"),
-            Triple("Code", { getCode("Main.kt", currentDemo, "Kotlin") }, "#444")
+            Triple("Code", { getCode("src/Main.kt", currentDemo, "Kotlin") }, "#444")
     )
 
     init {
