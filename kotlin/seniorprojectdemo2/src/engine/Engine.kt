@@ -168,24 +168,22 @@ class Engine(width: Int = 1280, height: Int = 720) {
 
         if (objects.isNotEmpty()) {
             shaderProgram.begin(objects[0].attribBuffer, data)
-            shaderProgram.setUniform1f("materialShininess", light.materialShininess)
-            shaderProgram.setUniform3f("materialSpecularColor", light.materialSpecularColor)
+
+            shaderProgram.setUniform1f("light.attenuation", light.attenuation)
+            shaderProgram.setUniform1f("light.ambientCoefficient", light.ambientCoefficient)
+            shaderProgram.setUniform1f("useLighting", if (Engine.enableLighting) 1f else 0f)
 
             shaderProgram.setUniform3f("light.position", light.position)
             shaderProgram.setUniform3f("light.color", light.color)
-            shaderProgram.setUniform1f("light.attenuation", light.attenuation)
-            shaderProgram.setUniform1f("light.ambientCoefficient", light.ambientCoefficient)
-            var b = 0
-            if (Engine.enableLighting) b = 1
-            gl.uniform1i(gl.getUniformLocation(shaderProgram.shaderProgram, "useLighting"), b)
+            shaderProgram.setUniform3f("cameraPosition", camera.position)
 
             shaderProgram.setUniformMatrix4fv("viewMatrix", camera.wMat.array)
-            shaderProgram.setUniform3f("cameraPosition", camera.position)
             shaderProgram.end()
         }
 
         objects.forEach {
             shaderProgram.begin(it.attribBuffer, data)
+            shaderProgram.setUniform3f("light.position", light.position)
             it.render(gl, shaderProgram)
             shaderProgram.end()
         }

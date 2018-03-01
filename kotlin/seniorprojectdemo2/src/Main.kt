@@ -100,12 +100,14 @@ class Main {
         launch {
             Dom.body(createNav(0))
             val div = Dom.div(
-                    Dom.h1("3D WebGL Rendering Engine Demo"),
-                    Dom.p("By Daniel Church")
+                    Dom.h1("ThreeEZ Demo"),
+                    Dom.h2("A 3D WebGL Rendering Engine"),
+                    Dom.p("By Daniel Church and Dieter Grosswiler")
             )
             div.className = "center"
             div.style.color = "#fff"
             div.style.fontSize = "40px"
+            div.style.paddingTop = "23vh"
             Dom.body(div)
         }
     }
@@ -155,11 +157,11 @@ class Main {
         currentDemo = "textureDemo"
         val engine = Engine()
 
-        val cube = Cube(texture = ModelLoader.loadTexture("out/production/SeniorProjectKotlin/crate.png"))
+        val cube = Cube(texture = ModelLoader.loadTexture("models/crate.png"))
         cube.position.x = -1f
         cube.position.z = -3f
 
-        val sphere = Sphere(texture = ModelLoader.loadTexture("out/production/SeniorProjectKotlin/cubetexture.png"))
+        val sphere = Sphere(texture = ModelLoader.loadTexture("models/texture.png"))
         sphere.position.x = 1f
         sphere.position.z = -3f
 
@@ -175,34 +177,32 @@ class Main {
     private fun shadingDemo() {
         currentDemo = "shadingDemo"
         val engine = Engine()
-        Engine.camera = FirstPersonCamera()
         Engine.enableLighting = true
+        engine.light.color = Vec3(0.8f, 0.5f, 0.9f)
 
-        val model = ModelLoader.loadObj("out/production/SeniorProjectKotlin/suzanne.obj", texture = ModelLoader.loadTexture("out/production/SeniorProjectKotlin/cube.png"))
+        val model = Sphere(texture = ModelLoader.loadTexture("models/test.png"))
         model.position.z = -3f
         engine.add(model)
 
-        val sphere = Sphere()
-        sphere.position.z = -3f
-        sphere.scale.x = 0.1f
-        sphere.scale.y = 0.1f
-        sphere.scale.z = 0.1f
+        val sphere = Sphere(texture = ModelLoader.loadTexture("models/test.png"))
+        sphere.scale = Vec3(0.1f, 0.1f, 0.1f)
+        sphere.materialColor = engine.light.color
         engine.add(sphere)
 
         engine.onUpdate = {
             engine.light.position.x = 2 * sin(Engine.time)
             engine.light.position.z = 2 * cos(Engine.time) - 3
-            sphere.position.x = 2 * sin(Engine.time)
-            sphere.position.z = 2 * cos(Engine.time) - 3
+            sphere.position = engine.light.position
         }
     }
 
     private fun modelDemo() {
         currentDemo = "modelDemo"
         val engine = Engine()
+        Engine.camera = FirstPersonCamera()
 
-        val model = ModelLoader.loadObj("out/production/SeniorProjectKotlin/suzanne.obj", texture = ModelLoader.loadTexture("out/production/SeniorProjectKotlin/cubetexture.png"))
-        model.position.z = -10f
+        val model = ModelLoader.loadObj("models/TropicalFish15.obj", texture = ModelLoader.loadTexture("models/TropicalFish15.jpg"))
+        model.position.z = -4f
         engine.add(model)
 
         engine.onUpdate = {
@@ -215,7 +215,7 @@ class Main {
         val engine = Engine()
         Engine.camera = FirstPersonCamera()
 
-        val cube = Cube(texture = ModelLoader.loadTexture("out/production/SeniorProjectKotlin/cubetexture.png"))
+        val cube = Cube(texture = ModelLoader.loadTexture("models/cubetexture.png"))
         cube.position.z = -3f
         engine.add(cube)
 
@@ -230,46 +230,21 @@ class Main {
         Engine.camera = FirstPersonCamera()
 
         val tex = ModelLoader.initTexture()
-        val vid = ModelLoader.setupVideo("out/production/SeniorProjectKotlin/Sintel.2010.720p.mkv")
+        val vid = ModelLoader.setupVideo("models/SintelIntro.mp4")
 
         val cube = Cube(texture = tex)
+        cube.scale = Vec3(-2, 1, -2)
         engine.add(cube)
 
-        cube.scale.x = 2f
-        cube.scale.z = 2f
-        cube.scale = Vec3(-2, 1, -2)
-
-        val model = ModelLoader.loadObj("out/production/SeniorProjectKotlin/suzanne.obj", texture = tex)
-        model.position.z = -10f
+        val model = ModelLoader.loadObj("models/suzanne.obj", texture = tex)
+        model.scale = Vec3(5f, 5f, 5f)
+        model.position = Vec3(5f, 0f, -10f)
         engine.add(model)
 
-        vid.volume = 1.0
-        vid.muted = false
-        vid.play()
-
-        val mute = Dom.input()
-        mute.type = "checkbox"
-        mute.onclick = {
-            vid.muted = !vid.muted
-            true
-        }
-        mute.checked = true
-
-        val span = Dom.span()
-        span.className = "checkmark"
-
-        val label = Dom.label("Mute", mute, span)
-        label.className = "container"
-        label.style.color = "#fff"
-
-        Dom.body(label).style.background = "#000"
-
-        engine.onMousePress = {
-            if (it.button.toInt() == 2) {
-                // vid.fastSeek(120.0)
-                vid.muted = !vid.muted
-            }
-        }
+        val sphere = Sphere(texture = tex)
+        sphere.scale = Vec3(5f, 5f, 5f)
+        sphere.position = Vec3(-5f, 0f, -10f)
+        engine.add(sphere)
 
         engine.onUpdate = {
             model.rotation.y = Engine.time

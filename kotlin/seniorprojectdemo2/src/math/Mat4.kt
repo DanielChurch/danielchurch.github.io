@@ -4,7 +4,7 @@ import org.khronos.webgl.Float32Array
 
 typealias Mat4JS = Float32Array
 
-class Mat4(val array: Mat4JS) {
+data class Mat4(val array: Mat4JS) {
     constructor() : this(Float32Array(mat4.create()))
     constructor(a: Array<Float>) : this(Float32Array(a))
 

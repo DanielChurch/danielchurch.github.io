@@ -14,6 +14,7 @@ class Dom {
         fun label(vararg children: Any) = append(document.createElement("label"), children) as HTMLLabelElement
         fun span(vararg children: Any) = append(document.createElement("span"), children) as HTMLSpanElement
         fun h1(vararg children: Any) = append(document.createElement("h1"), children) as HTMLHeadingElement
+        fun h2(vararg children: Any) = append(document.createElement("h2"), children) as HTMLHeadingElement
         fun pre(vararg children: Any) = append(document.createElement("pre"), children) as HTMLPreElement
         fun code(vararg children: Any) = append(document.createElement("code"), children) as HTMLElement
 

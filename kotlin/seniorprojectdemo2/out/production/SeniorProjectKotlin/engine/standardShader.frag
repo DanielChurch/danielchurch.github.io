@@ -7,6 +7,8 @@ uniform float materialShininess;
 uniform vec3 materialSpecularColor;
 uniform bool useLighting;
 
+uniform vec3 color;
+
 uniform struct Light {
     vec3 position;
     vec3 color;
@@ -46,12 +48,12 @@ void main(void) {
 
     // Attenuation
     float distanceToLight = length(light.position - surfacePos);
-    float attenuation = 1.0 / (1.0 + light.attenuation * distanceToLight * distanceToLight);
+    float attenuation = 1.0 / (1.0 + light.attenuation * pow(distanceToLight, 2.0));
 
     // Linear color (color before gamma correction)
     vec3 linearColor = ambient + attenuation * (diffuse + specular);
 
     // Final color (after gamma correction)
     vec3 gamma = vec3(1.0 / 2.2);
-    gl_FragColor = vec4(pow(linearColor, gamma), surfaceColor.a);
+    gl_FragColor = vec4(pow(linearColor, gamma), surfaceColor.a) + vec4(color, 1.0);
 }

@@ -1,5 +1,6 @@
 package engine
 
+import math.Mat3
 import math.Mat4
 import math.Vec3
 import org.khronos.webgl.get
@@ -39,21 +40,11 @@ open class Entity {
 
     val nMat: Mat4
         get() {
-            val m = wMat
+            val m = Engine.camera.wMat * wMat
 
-            val f = listOf(
-                    m.array[0], m.array[1], m.array[2], 0f,
-                    m.array[4], m.array[5], m.array[6], 0f,
-                    m.array[8], m.array[9], m.array[10], 0f,
-                    0f, 0f, 0f, 1f
-            )
+            m.invert()
+            m.transpose()
 
-            val l = Mat4(f.toTypedArray())
-
-            l.transpose()
-            l.invert()
-            l.transpose()
-
-            return l
+            return wMat
         }
 }

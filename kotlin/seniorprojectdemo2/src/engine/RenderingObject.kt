@@ -7,6 +7,10 @@ abstract class RenderingObject(private var vertices: Array<Float>, private var n
                                val tex: WebGLTexture = ModelLoader.loadTexture(), val tint: Vec3 = Vec3()): Entity() {
     constructor(values: Triple<Array<Float>, Array<Float>, Array<Float>>, tint: Vec3 = Vec3(), texture: WebGLTexture): this(values.first, values.second, values.third, tint = tint, tex = texture)
 
+    var materialShininess = 8f
+    var materialSpecularColor = Vec3(1f, 1f, 1f)
+    var materialColor = Vec3(0f, 0f, 0f)
+
     private var vert: Float32Array = Float32Array(0)
 
     val attribBuffer = Engine.gl.createBuffer() ?: throw IllegalStateException("Unable to create webgl buffer!")
@@ -47,6 +51,9 @@ abstract class RenderingObject(private var vertices: Array<Float>, private var n
 
         shaderProgram.setUniformMatrix4fv("vMat", wMat.array)
         shaderProgram.setUniformMatrix4fv("normMat", nMat.array)
+        shaderProgram.setUniform1f("materialShininess", materialShininess)
+        shaderProgram.setUniform3f("materialSpecularColor", materialSpecularColor)
+        shaderProgram.setUniform3f("color", materialColor)
 
         gl.bindBuffer(WebGLRenderingContext.ARRAY_BUFFER, attribBuffer)
         gl.bufferData(WebGLRenderingContext.ARRAY_BUFFER, vert, WebGLRenderingContext.STATIC_DRAW)

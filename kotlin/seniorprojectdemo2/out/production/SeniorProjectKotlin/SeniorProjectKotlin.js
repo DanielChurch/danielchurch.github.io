@@ -367,10 +367,10 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   Main.prototype.textureDemo_0 = function () {
     this.currentDemo_0 = 'textureDemo';
     var engine = new Engine();
-    var cube = new Cube(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('out/production/SeniorProjectKotlin/crate.png'));
+    var cube = new Cube(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/crate.png'));
     cube.position.x = -1.0;
     cube.position.z = -3.0;
-    var sphere = new Sphere(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('out/production/SeniorProjectKotlin/cubetexture.png'));
+    var sphere = new Sphere(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/texture.png'));
     sphere.position.x = 1.0;
     sphere.position.z = -3.0;
     engine.add_3ifc4f$(cube);
@@ -386,28 +386,21 @@ var SeniorProjectKotlin = function (_, Kotlin) {
       var tmp$_0 = closure$engine.light.position;
       var x_0 = Engine$Companion_getInstance().time;
       tmp$_0.z = 2 * Math_0.cos(x_0) - 3;
-      var tmp$_1 = closure$sphere.position;
-      var x_1 = Engine$Companion_getInstance().time;
-      tmp$_1.x = 2 * Math_0.sin(x_1);
-      var tmp$_2 = closure$sphere.position;
-      var x_2 = Engine$Companion_getInstance().time;
-      tmp$_2.z = 2 * Math_0.cos(x_2) - 3;
+      closure$sphere.position = closure$engine.light.position;
       return Unit;
     };
   }
   Main.prototype.shadingDemo_0 = function () {
     this.currentDemo_0 = 'shadingDemo';
     var engine = new Engine();
-    Engine$Companion_getInstance().camera = new FirstPersonCamera();
     Engine$Companion_getInstance().enableLighting = true;
-    var model = ModelLoader$Companion_getInstance().loadObj_jpwrlx$('out/production/SeniorProjectKotlin/suzanne.obj', ModelLoader$Companion_getInstance().loadTexture_61zpoe$('out/production/SeniorProjectKotlin/cube.png'));
+    engine.light.color = Vec3_init(0.8, 0.5, 0.9);
+    var model = new Sphere(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/test.png'));
     model.position.z = -3.0;
     engine.add_3ifc4f$(model);
-    var sphere = new Sphere();
-    sphere.position.z = -3.0;
-    sphere.scale.x = 0.1;
-    sphere.scale.y = 0.1;
-    sphere.scale.z = 0.1;
+    var sphere = new Sphere(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/test.png'));
+    sphere.scale = Vec3_init(0.1, 0.1, 0.1);
+    sphere.materialColor = engine.light.color;
     engine.add_3ifc4f$(sphere);
     engine.onUpdate = Main$shadingDemo$lambda(engine, sphere);
   };
@@ -420,8 +413,9 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   Main.prototype.modelDemo_0 = function () {
     this.currentDemo_0 = 'modelDemo';
     var engine = new Engine();
-    var model = ModelLoader$Companion_getInstance().loadObj_jpwrlx$('out/production/SeniorProjectKotlin/suzanne.obj', ModelLoader$Companion_getInstance().loadTexture_61zpoe$('out/production/SeniorProjectKotlin/cubetexture.png'));
-    model.position.z = -10.0;
+    Engine$Companion_getInstance().camera = new FirstPersonCamera();
+    var model = ModelLoader$Companion_getInstance().loadObj_jpwrlx$('models/TropicalFish15.obj', ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/TropicalFish15.jpg'));
+    model.position.z = -4.0;
     engine.add_3ifc4f$(model);
     engine.onUpdate = Main$modelDemo$lambda(model);
   };
@@ -435,26 +429,12 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     this.currentDemo_0 = 'fpsCamDemo';
     var engine = new Engine();
     Engine$Companion_getInstance().camera = new FirstPersonCamera();
-    var cube = new Cube(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('out/production/SeniorProjectKotlin/cubetexture.png'));
+    var cube = new Cube(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/cubetexture.png'));
     cube.position.z = -3.0;
     engine.add_3ifc4f$(cube);
     engine.onUpdate = Main$fpsCamDemo$lambda(cube);
   };
-  function Main$videoDemo$lambda(closure$vid) {
-    return function (it) {
-      closure$vid.muted = !closure$vid.muted;
-      return true;
-    };
-  }
-  function Main$videoDemo$lambda_0(closure$vid) {
-    return function (it) {
-      if (it.button === 2) {
-        closure$vid.muted = !closure$vid.muted;
-      }
-      return Unit;
-    };
-  }
-  function Main$videoDemo$lambda_1(closure$model, closure$cube, closure$tex, closure$vid) {
+  function Main$videoDemo$lambda(closure$model, closure$cube, closure$tex, closure$vid) {
     return function () {
       closure$model.rotation.y = Engine$Companion_getInstance().time;
       var tmp$ = closure$cube.rotation;
@@ -472,30 +452,19 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     var engine = new Engine();
     Engine$Companion_getInstance().camera = new FirstPersonCamera();
     var tex = ModelLoader$Companion_getInstance().initTexture();
-    var vid = ModelLoader$Companion_getInstance().setupVideo_61zpoe$('out/production/SeniorProjectKotlin/SintelIntro.mp4');
+    var vid = ModelLoader$Companion_getInstance().setupVideo_61zpoe$('models/SintelIntro.mp4');
     var cube = new Cube(void 0, tex);
-    engine.add_3ifc4f$(cube);
-    cube.scale.x = 2.0;
-    cube.scale.z = 2.0;
     cube.scale = Vec3_init(-2, 1, -2);
-    var model = ModelLoader$Companion_getInstance().loadObj_jpwrlx$('out/production/SeniorProjectKotlin/suzanne.obj', tex);
-    model.position.z = -10.0;
+    engine.add_3ifc4f$(cube);
+    var model = ModelLoader$Companion_getInstance().loadObj_jpwrlx$('models/suzanne.obj', tex);
+    model.scale = Vec3_init(5.0, 5.0, 5.0);
+    model.position = Vec3_init(5.0, 0.0, -10.0);
     engine.add_3ifc4f$(model);
-    vid.volume = 1.0;
-    vid.muted = false;
-    vid.play();
-    var mute = Dom$Companion_getInstance().input_jiburq$([]);
-    mute.type = 'checkbox';
-    mute.onclick = Main$videoDemo$lambda(vid);
-    mute.checked = true;
-    var span = Dom$Companion_getInstance().span_jiburq$([]);
-    span.className = 'checkmark';
-    var label = Dom$Companion_getInstance().label_jiburq$(['Mute', mute, span]);
-    label.className = 'container';
-    label.style.color = '#fff';
-    Dom$Companion_getInstance().body_jiburq$([label]).style.background = '#000';
-    engine.onMousePress = Main$videoDemo$lambda_0(vid);
-    engine.onUpdate = Main$videoDemo$lambda_1(model, cube, tex, vid);
+    var sphere = new Sphere(void 0, tex);
+    sphere.scale = Vec3_init(5.0, 5.0, 5.0);
+    sphere.position = Vec3_init(-5.0, 0.0, -10.0);
+    engine.add_3ifc4f$(sphere);
+    engine.onUpdate = Main$videoDemo$lambda(model, cube, tex, vid);
   };
   function Main$demos$lambda(this$Main) {
     return function () {
@@ -560,10 +529,11 @@ var SeniorProjectKotlin = function (_, Kotlin) {
         switch (this.state_0) {
           case 0:
             Dom$Companion_getInstance().body_jiburq$([this.local$this$Main.createNav_0(0)]);
-            var div = Dom$Companion_getInstance().div_jiburq$([Dom$Companion_getInstance().h1_jiburq$(['3D WebGL Rendering Engine Demo']), Dom$Companion_getInstance().p_jiburq$(['By Daniel Church'])]);
+            var div = Dom$Companion_getInstance().div_jiburq$([Dom$Companion_getInstance().h1_jiburq$(['ThreeEZ Demo']), Dom$Companion_getInstance().h2_jiburq$(['A 3D WebGL Rendering Engine']), Dom$Companion_getInstance().p_jiburq$(['By Daniel Church and Dieter Grosswiler'])]);
             div.className = 'center';
             div.style.color = '#fff';
             div.style.fontSize = '40px';
+            div.style.paddingTop = '23vh';
             return Dom$Companion_getInstance().body_jiburq$([div]);
           case 1:
             throw this.exception_0;
@@ -667,7 +637,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
       tint = Vec3_init_0();
     if (texture === void 0)
       texture = ModelLoader$Companion_getInstance().loadTexture_61zpoe$();
-    RenderingObject_init(ModelLoader$Companion_getInstance().loadOBJSource_61zpoe$('out/production/SeniorProjectKotlin/models/cube.obj'), tint, texture, this);
+    RenderingObject_init(ModelLoader$Companion_getInstance().loadOBJSource_61zpoe$('models/cube.obj'), tint, texture, this);
   }
   Cube.$metadata$ = {
     kind: Kind_CLASS,
@@ -857,18 +827,13 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     Engine$Companion_getInstance().gl.enable(WebGLRenderingContext.DEPTH_TEST);
     if (!this.objects_0.isEmpty()) {
       this.shaderProgram_0.begin_v6ru81$(this.objects_0.get_za3lpa$(0).attribBuffer, this.data_0);
-      this.shaderProgram_0.setUniform1f_9sobi5$('materialShininess', this.light.materialShininess);
-      this.shaderProgram_0.setUniform3f_l7wwll$('materialSpecularColor', this.light.materialSpecularColor);
-      this.shaderProgram_0.setUniform3f_l7wwll$('light.position', this.light.position);
-      this.shaderProgram_0.setUniform3f_l7wwll$('light.color', this.light.color);
       this.shaderProgram_0.setUniform1f_9sobi5$('light.attenuation', this.light.attenuation);
       this.shaderProgram_0.setUniform1f_9sobi5$('light.ambientCoefficient', this.light.ambientCoefficient);
-      var b = 0;
-      if (Engine$Companion_getInstance().enableLighting)
-        b = 1;
-      Engine$Companion_getInstance().gl.uniform1i(Engine$Companion_getInstance().gl.getUniformLocation(this.shaderProgram_0.shaderProgram, 'useLighting'), b);
-      this.shaderProgram_0.setUniformMatrix4fv_pphpxd$('viewMatrix', Engine$Companion_getInstance().camera.wMat.array);
+      this.shaderProgram_0.setUniform1f_9sobi5$('useLighting', Engine$Companion_getInstance().enableLighting ? 1.0 : 0.0);
+      this.shaderProgram_0.setUniform3f_l7wwll$('light.position', this.light.position);
+      this.shaderProgram_0.setUniform3f_l7wwll$('light.color', this.light.color);
       this.shaderProgram_0.setUniform3f_l7wwll$('cameraPosition', Engine$Companion_getInstance().camera.position);
+      this.shaderProgram_0.setUniformMatrix4fv_pphpxd$('viewMatrix', Engine$Companion_getInstance().camera.wMat.array);
       this.shaderProgram_0.end();
     }
     var tmp$;
@@ -876,6 +841,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     while (tmp$.hasNext()) {
       var element = tmp$.next();
       this.shaderProgram_0.begin_v6ru81$(element.attribBuffer, this.data_0);
+      this.shaderProgram_0.setUniform3f_l7wwll$('light.position', this.light.position);
       element.render_q3z2ux$(Engine$Companion_getInstance().gl, this.shaderProgram_0);
       this.shaderProgram_0.end();
     }
@@ -925,13 +891,10 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   });
   Object.defineProperty(Entity.prototype, 'nMat', {
     get: function () {
-      var m = this.wMat;
-      var f = listOf([m.array[0], m.array[1], m.array[2], 0.0, m.array[4], m.array[5], m.array[6], 0.0, m.array[8], m.array[9], m.array[10], 0.0, 0.0, 0.0, 0.0, 1.0]);
-      var l = Mat4_init_0(copyToArray(f));
-      l.transpose();
-      l.invert();
-      l.transpose();
-      return l;
+      var m = Engine$Companion_getInstance().camera.wMat.times_bms07u$(this.wMat);
+      m.invert();
+      m.transpose();
+      return this.wMat;
     }
   });
   Entity.$metadata$ = {
@@ -941,6 +904,9 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   };
   function FirstPersonCamera() {
     Camera.call(this);
+    this.mouseSensitivityX = 1.0;
+    this.mouseSensitivityY = 1.0;
+    this.speed = 1.0;
   }
   function FirstPersonCamera$get_FirstPersonCamera$onMousePressed$lambda(it) {
     switch (it.button) {
@@ -958,19 +924,21 @@ var SeniorProjectKotlin = function (_, Kotlin) {
       return FirstPersonCamera$get_FirstPersonCamera$onMousePressed$lambda;
     }
   });
-  function FirstPersonCamera$get_FirstPersonCamera$onMouseMove$lambda(it) {
-    var tmp$, tmp$_0;
-    var movementX = typeof (tmp$ = event.movementX) === 'number' ? tmp$ : throwCCE();
-    var movementY = typeof (tmp$_0 = event.movementY) === 'number' ? tmp$_0 : throwCCE();
-    if (Input$Companion_getInstance().isCursorLocked) {
-      Engine$Companion_getInstance().camera.rotation.x = Engine$Companion_getInstance().camera.rotation.x - movementY / 1000;
-      Engine$Companion_getInstance().camera.rotation.y = Engine$Companion_getInstance().camera.rotation.y - movementX / 1000;
-    }
-    return Unit;
+  function FirstPersonCamera$get_FirstPersonCamera$onMouseMove$lambda(this$FirstPersonCamera) {
+    return function (it) {
+      var tmp$, tmp$_0;
+      var movementX = typeof (tmp$ = event.movementX) === 'number' ? tmp$ : throwCCE();
+      var movementY = typeof (tmp$_0 = event.movementY) === 'number' ? tmp$_0 : throwCCE();
+      if (Input$Companion_getInstance().isCursorLocked) {
+        Engine$Companion_getInstance().camera.rotation.x = Engine$Companion_getInstance().camera.rotation.x - movementY / 1000 * this$FirstPersonCamera.mouseSensitivityY;
+        Engine$Companion_getInstance().camera.rotation.y = Engine$Companion_getInstance().camera.rotation.y - movementX / 1000 * this$FirstPersonCamera.mouseSensitivityX;
+      }
+      return Unit;
+    };
   }
   Object.defineProperty(FirstPersonCamera.prototype, 'onMouseMove', {
     get: function () {
-      return FirstPersonCamera$get_FirstPersonCamera$onMouseMove$lambda;
+      return FirstPersonCamera$get_FirstPersonCamera$onMouseMove$lambda(this);
     }
   });
   function FirstPersonCamera$get_FirstPersonCamera$onKeyPress$lambda(it) {
@@ -987,30 +955,30 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4;
     tmp$_0 = Engine$Companion_getInstance().camera;
     if (Input$Companion_getInstance().isKeyDown_za3lpa$(65)) {
-      tmp$ = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).minus_bmxtnp$(Engine$Companion_getInstance().camera.left.normalized().times_mx4ult$(0.1));
+      tmp$ = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).minus_bmxtnp$(Engine$Companion_getInstance().camera.left.normalized().times_mx4ult$(0.1).times_mx4ult$(this.speed));
     }
      else if (Input$Companion_getInstance().isKeyDown_za3lpa$(68)) {
-      tmp$ = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).plus_bmxtnp$(Engine$Companion_getInstance().camera.left.normalized().times_mx4ult$(0.1));
+      tmp$ = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).plus_bmxtnp$(Engine$Companion_getInstance().camera.left.normalized().times_mx4ult$(0.1).times_mx4ult$(this.speed));
     }
      else
       tmp$ = Engine$Companion_getInstance().camera.position;
     tmp$_0.position = tmp$;
     tmp$_2 = Engine$Companion_getInstance().camera;
     if (Input$Companion_getInstance().isKeyDown_za3lpa$(32)) {
-      tmp$_1 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1] + 0.1, Engine$Companion_getInstance().camera.position.array[2]);
+      tmp$_1 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1] + 0.1 * this.speed, Engine$Companion_getInstance().camera.position.array[2]);
     }
      else if (Input$Companion_getInstance().isKeyDown_za3lpa$(16)) {
-      tmp$_1 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1] - 0.1, Engine$Companion_getInstance().camera.position.array[2]);
+      tmp$_1 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1] - 0.1 * this.speed, Engine$Companion_getInstance().camera.position.array[2]);
     }
      else
       tmp$_1 = Engine$Companion_getInstance().camera.position;
     tmp$_2.position = tmp$_1;
     tmp$_4 = Engine$Companion_getInstance().camera;
     if (Input$Companion_getInstance().isKeyDown_za3lpa$(83)) {
-      tmp$_3 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).plus_bmxtnp$(Engine$Companion_getInstance().camera.forward.normalized().times_mx4ult$(0.1));
+      tmp$_3 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).plus_bmxtnp$(Engine$Companion_getInstance().camera.forward.normalized().times_mx4ult$(0.1).times_mx4ult$(this.speed));
     }
      else if (Input$Companion_getInstance().isKeyDown_za3lpa$(87)) {
-      tmp$_3 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).minus_bmxtnp$(Engine$Companion_getInstance().camera.forward.normalized().times_mx4ult$(0.1));
+      tmp$_3 = Vec3_init(Engine$Companion_getInstance().camera.position.array[0], Engine$Companion_getInstance().camera.position.array[1], Engine$Companion_getInstance().camera.position.array[2]).minus_bmxtnp$(Engine$Companion_getInstance().camera.forward.normalized().times_mx4ult$(0.1).times_mx4ult$(this.speed));
     }
      else
       tmp$_3 = Engine$Companion_getInstance().camera.position;
@@ -1074,8 +1042,6 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     this.color = Vec3_init(0.2, 0.0, 0.0);
     this.attenuation = 0.2;
     this.ambientCoefficient = 0.005;
-    this.materialShininess = 8.0;
-    this.materialSpecularColor = Vec3_init(1.0, 1.0, 1.0);
   }
   Light.$metadata$ = {
     kind: Kind_CLASS,
@@ -1199,7 +1165,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   }
   ModelLoader$Companion.prototype.loadTexture_61zpoe$ = function (url) {
     if (url === void 0)
-      url = 'out/production/SeniorProjectKotlin/models/standard_texture.png';
+      url = 'models/models/standard_texture.png';
     var tmp$;
     var texture = Engine$Companion_getInstance().gl.createTexture();
     Engine$Companion_getInstance().gl.bindTexture(WebGLRenderingContext.TEXTURE_2D, texture);
@@ -1439,6 +1405,9 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     this.texCoords_rycie4$_0 = texCoords;
     this.tex = tex;
     this.tint = tint;
+    this.materialShininess = 8.0;
+    this.materialSpecularColor = Vec3_init(1.0, 1.0, 1.0);
+    this.materialColor = Vec3_init(0.0, 0.0, 0.0);
     this.vert_wenh46$_0 = new Float32Array(0);
     var tmp$;
     tmp$ = Engine$Companion_getInstance().gl.createBuffer();
@@ -1497,6 +1466,9 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     gl.uniform1i(gl.getUniformLocation(shaderProgram.shaderProgram, 'materialTex'), 0);
     shaderProgram.setUniformMatrix4fv_pphpxd$('vMat', this.wMat.array);
     shaderProgram.setUniformMatrix4fv_pphpxd$('normMat', this.nMat.array);
+    shaderProgram.setUniform1f_9sobi5$('materialShininess', this.materialShininess);
+    shaderProgram.setUniform3f_l7wwll$('materialSpecularColor', this.materialSpecularColor);
+    shaderProgram.setUniform3f_l7wwll$('color', this.materialColor);
     gl.bindBuffer(WebGLRenderingContext.ARRAY_BUFFER, this.attribBuffer);
     gl.bufferData(WebGLRenderingContext.ARRAY_BUFFER, this.vert_wenh46$_0, WebGLRenderingContext.STATIC_DRAW);
     gl.drawArrays(shaderProgram.drawType, 0, this.vert_wenh46$_0.length / 8 | 0);
@@ -1667,6 +1639,9 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   ShaderProgram.prototype.setUniformMatrix4fv_pphpxd$ = function (location, value) {
     this.webgl.uniformMatrix4fv(this.getUniformLocation_61zpoe$(location), false, value);
   };
+  ShaderProgram.prototype.setUniformMatrix3fv_pphpxd$ = function (location, value) {
+    this.webgl.uniformMatrix4fv(this.getUniformLocation_61zpoe$(location), false, value);
+  };
   ShaderProgram.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'ShaderProgram',
@@ -1677,7 +1652,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
       tint = Vec3_init_0();
     if (texture === void 0)
       texture = ModelLoader$Companion_getInstance().loadTexture_61zpoe$();
-    RenderingObject_init(ModelLoader$Companion_getInstance().loadOBJSource_61zpoe$('out/production/SeniorProjectKotlin/sphere.obj'), tint, texture, this);
+    RenderingObject_init(ModelLoader$Companion_getInstance().loadOBJSource_61zpoe$('models/sphere.obj'), tint, texture, this);
   }
   Sphere.$metadata$ = {
     kind: Kind_CLASS,
@@ -1692,6 +1667,65 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     simpleName: 'StandardShader',
     interfaces: [ShaderProgram]
   };
+  function Mat3(array) {
+    this.array = array;
+  }
+  Mat3.prototype.clone = function () {
+    return new Mat3(this.array);
+  };
+  Mat3.prototype.identity = function () {
+    mat3.identity(this.array);
+  };
+  Mat3.prototype.transpose = function () {
+    mat3.transpose(this.array, this.array);
+  };
+  Mat3.prototype.invert = function () {
+    mat3.invert(this.array, this.array);
+  };
+  Mat3.prototype.adjoint = function () {
+    mat3.adjoint(this.array, this.array);
+  };
+  Mat3.prototype.determinant = function () {
+    return mat3.determinant(this.array);
+  };
+  Mat3.prototype.translate_bmxtnp$ = function (v) {
+    mat3.translate(this.array, this.array, v.array);
+  };
+  Mat3.prototype.rotateX_3p81yu$ = function (rad) {
+    mat3.rotateX(this.array, this.array, numberToDouble(rad));
+  };
+  Mat3.prototype.rotateY_3p81yu$ = function (rad) {
+    mat3.rotateY(this.array, this.array, numberToDouble(rad));
+  };
+  Mat3.prototype.rotateZ_3p81yu$ = function (rad) {
+    mat3.rotateZ(this.array, this.array, numberToDouble(rad));
+  };
+  Mat3.prototype.scale_bmxtnp$ = function (v) {
+    mat3.scale(this.array, this.array, v.array);
+  };
+  Mat3.prototype.multiply_bms07t$ = function (other) {
+    var ret = Mat3_init();
+    mat3.multiply(ret.array, this.array, other.array);
+    return ret;
+  };
+  Mat3.prototype.times_bms07t$ = function (other) {
+    return this.multiply_bms07t$(other);
+  };
+  Mat3.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Mat3',
+    interfaces: []
+  };
+  function Mat3_init($this) {
+    $this = $this || Object.create(Mat3.prototype);
+    Mat3.call($this, new Float32Array(mat3.create()));
+    return $this;
+  }
+  function Mat3_init_0(a, $this) {
+    $this = $this || Object.create(Mat3.prototype);
+    Mat3.call($this, new Float32Array(a));
+    return $this;
+  }
   function Mat4(array) {
     this.array = array;
   }
@@ -1754,6 +1788,23 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     Mat4.call($this, new Float32Array(a));
     return $this;
   }
+  Mat4.prototype.component1 = function () {
+    return this.array;
+  };
+  Mat4.prototype.copy_b5uka5$ = function (array) {
+    return new Mat4(array === void 0 ? this.array : array);
+  };
+  Mat4.prototype.toString = function () {
+    return 'Mat4(array=' + Kotlin.toString(this.array) + ')';
+  };
+  Mat4.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.array) | 0;
+    return result;
+  };
+  Mat4.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.array, other.array))));
+  };
   function Quaternion() {
     Quaternion$Companion_getInstance();
   }
@@ -1960,6 +2011,10 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     var tmp$;
     return Kotlin.isType(tmp$ = this.append_0(document.createElement('h1'), children), HTMLHeadingElement) ? tmp$ : throwCCE();
   };
+  Dom$Companion.prototype.h2_jiburq$ = function (children) {
+    var tmp$;
+    return Kotlin.isType(tmp$ = this.append_0(document.createElement('h2'), children), HTMLHeadingElement) ? tmp$ : throwCCE();
+  };
   Dom$Companion.prototype.pre_jiburq$ = function (children) {
     var tmp$;
     return Kotlin.isType(tmp$ = this.append_0(document.createElement('pre'), children), HTMLPreElement) ? tmp$ : throwCCE();
@@ -2045,6 +2100,9 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   package$engine.Sphere = Sphere;
   package$engine.StandardShader = StandardShader;
   var package$math = _.math || (_.math = {});
+  package$math.Mat3_init = Mat3_init;
+  package$math.Mat3_init_o5v4nz$ = Mat3_init_0;
+  package$math.Mat3 = Mat3;
   package$math.Mat4_init = Mat4_init;
   package$math.Mat4_init_o5v4nz$ = Mat4_init_0;
   package$math.Mat4 = Mat4;

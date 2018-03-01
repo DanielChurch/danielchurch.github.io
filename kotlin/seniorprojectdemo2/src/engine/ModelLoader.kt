@@ -96,7 +96,7 @@ class ModelLoader {
             Engine.gl.texImage2D(WebGLRenderingContext.TEXTURE_2D, level, internalFormat, srcFormat, srcType, video)
         }
 
-        fun loadTexture(url: String = "out/production/SeniorProjectKotlin/models/standard_texture.png"): WebGLTexture {
+        fun loadTexture(url: String = "models/models/standard_texture.png"): WebGLTexture {
             val texture = Engine.gl.createTexture()
             Engine.gl.bindTexture(WebGLRenderingContext.TEXTURE_2D, texture)
 
@@ -209,7 +209,7 @@ class ModelLoader {
                         // TODO: Do tex stuff
                         print(Ajax.read(file, false))
 
-//                        var tex = loadTexture(Engine.gl, "out/production/SeniorProjectKotlin/models/standard_texture.png")
+//                        var tex = loadTexture(Engine.gl, "models/models/standard_texture.png")
                     }
                 }
             }
