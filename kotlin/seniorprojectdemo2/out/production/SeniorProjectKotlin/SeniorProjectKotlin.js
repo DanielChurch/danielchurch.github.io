@@ -472,7 +472,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     var engine = new Engine();
     Engine$Companion_getInstance().camera = new FirstPersonCamera();
     var tex = ModelLoader$Companion_getInstance().initTexture();
-    var vid = ModelLoader$Companion_getInstance().setupVideo_61zpoe$('out/production/SeniorProjectKotlin/Sintel.2010.720p.mkv');
+    var vid = ModelLoader$Companion_getInstance().setupVideo_61zpoe$('out/production/SeniorProjectKotlin/SintelIntro.mp4');
     var cube = new Cube(void 0, tex);
     engine.add_3ifc4f$(cube);
     cube.scale.x = 2.0;
@@ -529,7 +529,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   }
   function Main$demos$lambda_4(this$Main) {
     return function () {
-      this$Main.getCode_0('Main.kt', this$Main.currentDemo_0, 'Kotlin');
+      this$Main.getCode_0('src/Main.kt', this$Main.currentDemo_0, 'Kotlin');
       return Unit;
     };
   }
