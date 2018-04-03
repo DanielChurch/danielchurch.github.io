@@ -345,7 +345,10 @@ class Main {
     fun solarDemo() {
         currentDemo = "solarDemo"
         val engine = Engine()
-        Engine.camera = FirstPersonCamera()
+        Engine.camera = FirstPersonCamera().apply {
+            position = Vec3(0, 3, 10)
+            rotation = Vec3(-0.3, 0, 0)
+        }
 
         fun createPlanet(texture: String, size: Number, orbit: Number, period: Number) =
                 Pair(

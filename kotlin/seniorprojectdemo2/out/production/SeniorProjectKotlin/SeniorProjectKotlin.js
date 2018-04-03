@@ -624,18 +624,22 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   Main.prototype.solarDemo = function () {
     this.currentDemo_0 = 'solarDemo';
     var engine = new Engine();
-    Engine$Companion_getInstance().camera = new FirstPersonCamera();
+    var tmp$ = Engine$Companion_getInstance();
+    var $receiver = new FirstPersonCamera();
+    $receiver.position = Vec3_init(0, 3, 10);
+    $receiver.rotation = Vec3_init(-0.3, 0, 0);
+    tmp$.camera = $receiver;
     var createPlanet = Main$solarDemo$createPlanet;
-    var $receiver = new Sphere(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/solar/positiveX.jpg'));
-    $receiver.scale = Vec3_init(100, 100, 100);
-    $receiver.rotation = Vec3_init(0, 180, 0);
-    engine.add_3ifc4f$($receiver);
+    var $receiver_0 = new Sphere(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/solar/positiveX.jpg'));
+    $receiver_0.scale = Vec3_init(100, 100, 100);
+    $receiver_0.rotation = Vec3_init(0, 180, 0);
+    engine.add_3ifc4f$($receiver_0);
     var orbits = ArrayList_init();
-    var $receiver_0 = listOf([createPlanet('sun', 50.0, 0.0, 0.0), createPlanet('mercury', 4.0, 57.0, 0.241), createPlanet('venus', 8.0, 100.0, 0.615), createPlanet('earth', 30.0, 130.0, 1.0), createPlanet('moon', 1.0, 20.0, 0.075), createPlanet('mars', 6.0, 180.0, 1.88), createPlanet('jupiter', 20.0, 300.0, 11.86), createPlanet('saturn', 17.0, 400.0, 9.86), createPlanet('uranus', 10.0, 450.0, 15.86), createPlanet('neptune', 10.0, 500.0, 8.86)]);
-    var tmp$;
-    tmp$ = $receiver_0.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
+    var $receiver_1 = listOf([createPlanet('sun', 50.0, 0.0, 0.0), createPlanet('mercury', 4.0, 57.0, 0.241), createPlanet('venus', 8.0, 100.0, 0.615), createPlanet('earth', 30.0, 130.0, 1.0), createPlanet('moon', 1.0, 20.0, 0.075), createPlanet('mars', 6.0, 180.0, 1.88), createPlanet('jupiter', 20.0, 300.0, 11.86), createPlanet('saturn', 17.0, 400.0, 9.86), createPlanet('uranus', 10.0, 450.0, 15.86), createPlanet('neptune', 10.0, 500.0, 8.86)]);
+    var tmp$_0;
+    tmp$_0 = $receiver_1.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
       var planet = element.component1()
       , info = element.component2();
       var size = info.component1()
@@ -647,7 +651,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
       orbits.add_11rb$(path);
       engine.add_3ifc4f$(path);
     }
-    var planets = $receiver_0;
+    var planets = $receiver_1;
     engine.onUpdate = Main$solarDemo$lambda(planets, orbits);
   };
   function Main$demos$lambda(this$Main) {
