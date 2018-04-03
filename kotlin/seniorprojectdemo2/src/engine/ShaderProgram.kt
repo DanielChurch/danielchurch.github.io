@@ -50,12 +50,12 @@ open class ShaderProgram<T>(
             println("attrib: ${info.locationName}, info.location: ${info.location}, info.offset: ${info.offset}")
         }
 
-        when(drawType) {
+        drawLength = when(drawType) {
             WebGLRenderingContext.TRIANGLES -> {
-                drawLength = verticesBlockSize * 3
+                verticesBlockSize * 3
             }
             else -> {
-                drawLength = verticesBlockSize
+                verticesBlockSize
             }
         }
 

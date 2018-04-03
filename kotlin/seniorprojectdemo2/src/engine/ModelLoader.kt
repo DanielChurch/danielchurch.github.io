@@ -24,7 +24,7 @@ class ModelLoader {
             rawFile.onreadystatechange = {
                 if (rawFile.readyState.toInt() == 4) {
                     if (rawFile.status.toInt() == 200 || rawFile.status.toInt() == 0) {
-                        var allText = rawFile.responseText
+                        val allText = rawFile.responseText
                         println(allText)
                     }
                 }
@@ -35,14 +35,8 @@ class ModelLoader {
         var copyVideo = false
 
         fun setupVideo(url: String): HTMLVideoElement {
-            val video = document.createElement("video") as HTMLVideoElement
-
             var playing = false
             var timeupdate = false
-
-            video.autoplay = true
-            video.muted = true
-            video.loop = true
 
             fun checkReady() {
                 if (playing && timeupdate) {
@@ -50,20 +44,24 @@ class ModelLoader {
                 }
             }
 
-            video.onplaying = {
-                playing = true
-                checkReady()
-            }
+            return (document.createElement("video") as HTMLVideoElement).apply({
+                autoplay = true
+                muted = true
+                loop = true
 
-            video.ontimeupdate = {
-                timeupdate = true
-                checkReady()
-            }
+                onplaying = {
+                    playing = true
+                    checkReady()
+                }
 
-            video.src = url
-            video.play()
+                ontimeupdate = {
+                    timeupdate = true
+                    checkReady()
+                }
 
-            return video
+                src = url
+                play()
+            })
         }
 
         fun initTexture(): WebGLTexture {
@@ -78,11 +76,13 @@ class ModelLoader {
             val srcFormat = WebGLRenderingContext.RGBA
             val srcType = WebGLRenderingContext.UNSIGNED_BYTE
             val pixel = Uint8Array(arrayOf<Byte>(0, 0, 127, 127))
-            Engine.gl.texImage2D(WebGLRenderingContext.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel)
+            Engine.gl.run {
+                texImage2D(WebGLRenderingContext.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel)
 
-            Engine.gl.texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_S, WebGLRenderingContext.CLAMP_TO_EDGE)
-            Engine.gl.texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_T, WebGLRenderingContext.CLAMP_TO_EDGE)
-            Engine.gl.texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_MIN_FILTER, WebGLRenderingContext.LINEAR)
+                texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_S, WebGLRenderingContext.CLAMP_TO_EDGE)
+                texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_T, WebGLRenderingContext.CLAMP_TO_EDGE)
+                texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_MIN_FILTER, WebGLRenderingContext.LINEAR)
+            }
 
             return texture!!
         }
@@ -92,11 +92,13 @@ class ModelLoader {
             val internalFormat = WebGLRenderingContext.RGBA
             val srcFormat = WebGLRenderingContext.RGBA
             val srcType = WebGLRenderingContext.UNSIGNED_BYTE
-            Engine.gl.bindTexture(WebGLRenderingContext.TEXTURE_2D, texture)
-            Engine.gl.texImage2D(WebGLRenderingContext.TEXTURE_2D, level, internalFormat, srcFormat, srcType, video)
+            Engine.gl.run {
+                bindTexture(WebGLRenderingContext.TEXTURE_2D, texture)
+                texImage2D(WebGLRenderingContext.TEXTURE_2D, level, internalFormat, srcFormat, srcType, video)
+            }
         }
 
-        fun loadTexture(url: String = "models/models/standard_texture.png"): WebGLTexture {
+        fun loadTexture(url: String = "models/standard_texture.png"): WebGLTexture {
             val texture = Engine.gl.createTexture()
             Engine.gl.bindTexture(WebGLRenderingContext.TEXTURE_2D, texture)
 
@@ -115,20 +117,22 @@ class ModelLoader {
             val image = window.document.createElement("img") as HTMLImageElement
 
             image.onload = {
-                Engine.gl.bindTexture(WebGLRenderingContext.TEXTURE_2D, texture)
-                Engine.gl.texImage2D(WebGLRenderingContext.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image)
-                // WebGL1 has different requirements for power of 2 images
-                // vs non power of 2 images so check if the image is a
-                // power of 2 in both dimensions.
-                if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-                    // Yes, it's a power of 2. Generate mips.
-                    Engine.gl.generateMipmap(WebGLRenderingContext.TEXTURE_2D)
-                } else {
-                    // No, it's not a power of 2. Turn of mips and set
-                    // wrapping to clamp to edge
-                    Engine.gl.texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_S, WebGLRenderingContext.CLAMP_TO_EDGE)
-                    Engine.gl.texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_T, WebGLRenderingContext.CLAMP_TO_EDGE)
-                    Engine.gl.texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_MIN_FILTER, WebGLRenderingContext.LINEAR)
+                Engine.gl.run {
+                    bindTexture(WebGLRenderingContext.TEXTURE_2D, texture)
+                    texImage2D(WebGLRenderingContext.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image)
+                    // WebGL1 has different requirements for power of 2 images
+                    // vs non power of 2 images so check if the image is a
+                    // power of 2 in both dimensions.
+                    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+                        // Yes, it's a power of 2. Generate mips.
+                        generateMipmap(WebGLRenderingContext.TEXTURE_2D)
+                    } else {
+                        // No, it's not a power of 2. Turn of mips and set
+                        // wrapping to clamp to edge
+                        texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_S, WebGLRenderingContext.CLAMP_TO_EDGE)
+                        texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_WRAP_T, WebGLRenderingContext.CLAMP_TO_EDGE)
+                        texParameteri(WebGLRenderingContext.TEXTURE_2D, WebGLRenderingContext.TEXTURE_MIN_FILTER, WebGLRenderingContext.LINEAR)
+                    }
                 }
             }
             image.src = url

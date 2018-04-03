@@ -5,6 +5,7 @@ import kotlin.browser.document
 
 class Dom {
     companion object {
+        val body = document.body as HTMLElement
         fun body(vararg children: Any) = append(document.body as Element, children) as HTMLBodyElement
         fun div(vararg children: Any) = append(document.createElement("div"), children) as HTMLDivElement
         fun canvas(vararg children: Any) = append(document.createElement("canvas"), children) as HTMLCanvasElement

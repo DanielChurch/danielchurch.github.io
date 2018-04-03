@@ -15,17 +15,14 @@ open class Camera: Entity() {
     open val onKeyPress: ((KeyboardEvent) -> Unit)? = null
 
     override val wMat: Mat4
-        get() {
-            val vMat = Mat4()
+        get() = Mat4().apply {
+            translate(position)
+            rotateY(rotation.y)
+            rotateX(rotation.x)
+            scale(scale)
 
-            vMat.translate(position)
-            vMat.rotateY(rotation.y)
-            vMat.rotateX(rotation.x)
-            vMat.scale(scale)
-
-            vMat.invert()
-            return vMat
+            invert()
         }
 
-    open fun update() {}
+    override fun update() {}
 }

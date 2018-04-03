@@ -24,8 +24,10 @@ class FirstPersonCamera: Camera() {
             val movementX = js("event.movementX") as Float
             val movementY = js("event.movementY") as Float
             if (Input.isCursorLocked) {
-                Engine.camera.rotation.x -= movementY / 1000 * mouseSensitivityY
-                Engine.camera.rotation.y -= movementX / 1000 * mouseSensitivityX
+                Engine.camera.rotation.run {
+                    x -= movementY / 1000 * mouseSensitivityY
+                    y -= movementX / 1000 * mouseSensitivityX
+                }
             }
         }
 

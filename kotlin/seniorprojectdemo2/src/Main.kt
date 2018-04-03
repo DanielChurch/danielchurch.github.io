@@ -4,12 +4,14 @@ import kotlin.browser.window
 import kotlin.dom.clear
 import math.Vec3
 import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.math.PI
 import kotlin.math.sin
 import kotlin.js.Promise
 import kotlin.js.*
 import kotlin.coroutines.experimental.*
+import kotlin.js.Math.random
 import kotlin.math.cos
 
 external fun setTimeout(function: () -> Unit, delay: Long)
@@ -55,33 +57,39 @@ class Main {
     }
 
     private fun getCode(fileName: String, functionName: String, languageName: String) {
-        var content: dynamic = Dom.h1("Select a demo first to view it's code")
-        content.style.textAlign = "center"
-        content.style.fontSize = "80px"
-        content.style.color = "#fff"
+        var content: dynamic = Dom.h1("Select a demo first to view it's code").apply {
+            style.textAlign = "center"
+            style.fontSize = "80px"
+            style.color = "#fff"
+        }
 
         if (!functionName.isEmpty()) {
-            val code = Dom.code(getCodeFromName(fileName, functionName))
-            code.className = languageName
+            val code = Dom.code(getCodeFromName(fileName, functionName)).apply {
+                className = languageName
+            }
 
-            content = Dom.pre(code)
-            content.style.textAlign = "left"
+            content = Dom.pre(code).apply {
+                style.textAlign = "left"
+            }
         }
 
-        content.style.position = "absolute"
-        content.style.top = "50%"
-        content.style.left = "50%"
-        content.style.transform = "translate(-50%, -50%)"
-
-        val div = Dom.div(content)
-        div.id = "overlay"
-        div.onclick = {
-            div.style.display = "none"
-            document.getElementById("overlay")?.remove()
-            true
+        (content as HTMLElement).style.apply {
+            position = "absolute"
+            top = "50%"
+            left = "50%"
+            transform = "translate(-50%, -50%)"
         }
 
-        Dom.body(div)
+        Dom.body(
+                Dom.div(content).apply {
+                    id = "overlay"
+                    onclick = {
+                        style.display = "none"
+                        document.getElementById("overlay")?.remove()
+                        true
+                    }
+                }
+        )
         js("hljs.initHighlighting.called = false; hljs.initHighlighting();")
     }
 
@@ -91,24 +99,28 @@ class Main {
             Triple("Model", { modelDemo() }, "#f44336"),
             Triple("FPS Camera", { fpsCamDemo() }, "orange"),
             Triple("Animation", { videoDemo() }, "#430297"),
+            Triple("Particles", { particleDemo() }, "brown"),
+            Triple("Solar", { solarDemo() }, "pink"),
             Triple("Code", { getCode("src/Main.kt", currentDemo, "Kotlin") }, "#444")
     )
 
     init {
-        Dom.body().style.background = "#000"
+        Dom.body.style.background = "#000"
 
         launch {
             Dom.body(createNav(0))
-            val div = Dom.div(
-                    Dom.h1("ThreeEZ Demo"),
-                    Dom.h2("A 3D WebGL Rendering Engine"),
-                    Dom.p("By Daniel Church and Dieter Grosswiler")
+            Dom.body(
+                    Dom.div(
+                            Dom.h1("ThreeEZ Demo"),
+                            Dom.h2("A 3D WebGL Rendering Engine"),
+                            Dom.p("By Daniel Church and Dieter Grosswiler")
+                    ).apply {
+                        className = "center"
+                        style.color = "#fff"
+                        style.fontSize = "40px"
+                        style.paddingTop = "23vh"
+                    }
             )
-            div.className = "center"
-            div.style.color = "#fff"
-            div.style.fontSize = "40px"
-            div.style.paddingTop = "23vh"
-            Dom.body(div)
         }
     }
 
@@ -116,26 +128,26 @@ class Main {
         // Set up nav bar
         var i = 0
         fun getNav(name: String, func: () -> Unit, color: String) : Element {
-            val anchor = Dom.a(name)
-            anchor.className = "sidenav"
-            anchor.style.top = "calc(50vh - ${demos.size * 30 + 10}px + ${60 * i}px)"
-            anchor.style.background = color
-            anchor.onclick = {
-                if (name == "Code") {
-                    func()
-                } else {
-                    launch {
-                        clearScene(pauseDuration).await()
-
+            i++
+            return Dom.a(name).apply {
+                className = "sidenav"
+                style.top = "calc(50vh - ${demos.size * 38 + 10}px + ${60 * i}px)"
+                style.background = color
+                onclick = {
+                    if (name == "Code") {
                         func()
+                    } else {
+                        launch {
+                            clearScene(pauseDuration).await()
 
-                        delay(10)
-                        Engine.canvas?.className = "grow"
+                            func()
+
+                            delay(10)
+                            Engine.canvas?.className = "grow"
+                        }
                     }
                 }
             }
-            i++
-            return anchor
         }
 
         return Dom.div(*demos.map { (name, func, color) -> getNav(name, func, color) }.toTypedArray())
@@ -156,17 +168,22 @@ class Main {
     private fun textureDemo() {
         currentDemo = "textureDemo"
         val engine = Engine()
+        Engine.camera = FirstPersonCamera()
 
-        val cube = Cube(texture = ModelLoader.loadTexture("models/crate.png"))
-        cube.position.x = -1f
-        cube.position.z = -3f
+        val cube = Cube(texture = ModelLoader.loadTexture("models/crate.png")).apply {
+            position.x = -1f
+            position.z = -3f
+        }
 
-        val sphere = Sphere(texture = ModelLoader.loadTexture("models/texture.png"))
-        sphere.position.x = 1f
-        sphere.position.z = -3f
+        val sphere = Sphere(texture = ModelLoader.loadTexture("models/texture.png")).apply {
+            position.x = 1f
+            position.z = -3f
+        }
 
-        engine.add(cube)
-        engine.add(sphere)
+        engine.run {
+            add(cube)
+            add(sphere)
+        }
 
         engine.onUpdate = {
             cube.rotation.y = Engine.time
@@ -180,18 +197,25 @@ class Main {
         Engine.enableLighting = true
         engine.light.color = Vec3(0.8f, 0.5f, 0.9f)
 
-        val model = Sphere(texture = ModelLoader.loadTexture("models/test.png"))
-        model.position.z = -3f
-        engine.add(model)
+        val model = Sphere(texture = ModelLoader.loadTexture("models/test.png")).apply {
+            position.z = -3f
+        }
 
-        val sphere = Sphere(texture = ModelLoader.loadTexture("models/test.png"))
-        sphere.scale = Vec3(0.1f, 0.1f, 0.1f)
-        sphere.materialColor = engine.light.color
-        engine.add(sphere)
+        val sphere = Sphere(texture = ModelLoader.loadTexture("models/test.png")).apply {
+            scale = Vec3(0.1f, 0.1f, 0.1f)
+            materialColor = engine.light.color
+        }
+
+        engine.run {
+            add(model)
+            add(sphere)
+        }
 
         engine.onUpdate = {
-            engine.light.position.x = 2 * sin(Engine.time)
-            engine.light.position.z = 2 * cos(Engine.time) - 3
+            engine.run {
+                light.position.x = 2 * sin(Engine.time)
+                light.position.z = 2 * cos(Engine.time) - 3
+            }
             sphere.position = engine.light.position
         }
     }
@@ -200,8 +224,11 @@ class Main {
         currentDemo = "modelDemo"
         val engine = Engine()
 
-        val model = ModelLoader.loadObj("models/TropicalFish15.obj", texture = ModelLoader.loadTexture("models/TropicalFish15.jpg"))
-        model.position.z = -4f
+        val model = ModelLoader.loadObj("models/TropicalFish15.obj",
+                texture = ModelLoader.loadTexture("models/TropicalFish15.jpg")).apply {
+            position.z = -4f
+        }
+
         engine.add(model)
 
         engine.onUpdate = {
@@ -214,8 +241,9 @@ class Main {
         val engine = Engine()
         Engine.camera = FirstPersonCamera()
 
-        val cube = Cube(texture = ModelLoader.loadTexture("models/cubetexture.png"))
-        cube.position.z = -3f
+        val cube = Cube(texture = ModelLoader.loadTexture("models/cubetexture.png")).apply {
+            position.z = -3f
+        }
         engine.add(cube)
 
         engine.onUpdate = {
@@ -235,21 +263,116 @@ class Main {
         cube.scale = Vec3(-2, 1, -2)
         engine.add(cube)
 
-        val model = ModelLoader.loadObj("models/suzanne.obj", texture = tex)
-        model.scale = Vec3(5f, 5f, 5f)
-        model.position = Vec3(5f, 0f, -10f)
-        engine.add(model)
+        val model = ModelLoader.loadObj("models/suzanne.obj", texture = tex).apply {
+            scale = Vec3(5f, 5f, 5f)
+            position = Vec3(5f, 0f, -10f)
+        }
 
-        val sphere = Sphere(texture = tex)
-        sphere.scale = Vec3(5f, 5f, 5f)
-        sphere.position = Vec3(-5f, 0f, -10f)
-        engine.add(sphere)
+        val sphere = Sphere(texture = tex).apply {
+            scale = Vec3(5f, 5f, 5f)
+            position = Vec3(-5f, 0f, -10f)
+        }
+
+        engine.run {
+            add(model)
+            add(sphere)
+        }
 
         engine.onUpdate = {
             model.rotation.y = Engine.time
             cube.rotation.y = 2 * PI.toFloat() * sin(Engine.time / 10)
             if (ModelLoader.copyVideo) {
                 ModelLoader.updateTexture(tex, vid)
+            }
+        }
+    }
+
+    fun particleDemo() {
+        currentDemo = "particleDemo"
+        val engine = Engine()
+        Engine.camera = FirstPersonCamera()
+
+        val ps = ParticleSystem(emissionRate = 3).apply {
+            var vec3 = Vec3()
+            fun centeredRandom() = random() - 0.5f
+            val amt = 0.1
+            velFunc = { vec3 = Vec3(centeredRandom() * amt, centeredRandom() * amt, centeredRandom() * amt); vec3 }
+            accelFunc = { vec3.times(-0.01f) }
+
+            tintFunc = { Vec3(random(), random(), random()) }
+        }
+
+        engine.run {
+            add(ps)
+        }
+
+        engine.onUpdate = {
+            ps.position.y = sin(Engine.time)
+            ps.position.x = 5 * sin(Engine.time)
+            ps.position.z = 5 * cos(Engine.time)
+        }
+    }
+
+    fun solarDemo() {
+        currentDemo = "solarDemo"
+        val engine = Engine()
+        Engine.camera = FirstPersonCamera()
+
+        fun createPlanet(texture: String, size: Number, orbit: Number, period: Number) =
+                Pair(
+                        Sphere(texture = ModelLoader.loadTexture("models/solar/${texture}_diffuse.jpg")),
+                        Triple(size.toFloat() / 100, orbit.toFloat() / 100, period.toFloat() * 2)
+                )
+
+        engine.add(Sphere(texture = ModelLoader.loadTexture("models/solar/positiveX.jpg")).apply {
+            scale = Vec3(100, 100, 100)
+            rotation = Vec3(0, 180, 0)
+        })
+
+        val orbits = mutableListOf<engine.RenderingObject>()
+
+        val planets = listOf(
+                createPlanet("sun", 50f, 0f, 0f),
+                createPlanet("mercury", 4f, 57f, 0.241),
+                createPlanet("venus", 8f, 100f, 0.615),
+                createPlanet("earth", 30f, 130f, 1.0),
+                createPlanet("moon", 1f, 20f, 0.075),
+                createPlanet("mars", 6f, 180f, 1.88),
+                createPlanet("jupiter", 20f, 300f, 11.86),
+                createPlanet("saturn", 17f, 400f, 9.86),
+                createPlanet("uranus", 10f, 450f, 15.86),
+                createPlanet("neptune", 10f, 500f, 8.86)
+        ).apply {
+            forEach {
+                val (planet, info) = it
+                val (size, orbit, period) = info
+                engine.run {
+                    add(planet.apply {
+                        scale = Vec3(size, size, size)
+                    })
+                    val path = OrbitPath(orbit)
+                    orbits.add(path)
+                    add(path)
+                }
+            }
+        }
+
+        engine.onUpdate = {
+            planets.forEachIndexed { i, pair ->
+                val (planet, info) = pair
+                val (size, orbit, period) = info
+
+                if (i != 0) {
+                    // Earth & Moon
+                    if (i == 4) {
+                        val earthPos = planets[3].first.position
+                        planet.position = earthPos + Vec3(sin(Engine.time / period) * orbit, 0, cos(Engine.time / period) * orbit)
+                        orbits[i].position = earthPos
+                    } else {
+                        planet.position.x = sin(Engine.time / period) * orbit
+                        planet.position.z = cos(Engine.time / period) * orbit
+                    }
+                }
             }
         }
     }

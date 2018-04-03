@@ -48,5 +48,7 @@ Temporary Items
 
 **.xml
 .idea/*
+out/*
 bin/*
+lib/*
 **.iml
