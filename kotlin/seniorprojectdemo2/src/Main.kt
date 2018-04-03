@@ -3,8 +3,10 @@ import web.Dom
 import kotlin.browser.window
 import kotlin.dom.clear
 import math.Vec3
+import org.khronos.webgl.WebGLRenderingContext
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 import kotlin.math.PI
 import kotlin.math.sin
@@ -131,7 +133,7 @@ class Main {
             i++
             return Dom.a(name).apply {
                 className = "sidenav"
-                style.top = "calc(50vh - ${demos.size * 38 + 10}px + ${60 * i}px)"
+                style.top = "calc(50vh - ${demos.size * 38}px + ${60 * i}px)"
                 style.background = color
                 onclick = {
                     if (name == "Code") {
@@ -291,25 +293,52 @@ class Main {
         currentDemo = "particleDemo"
         val engine = Engine()
         Engine.camera = FirstPersonCamera()
+        var index = 0
 
-        val ps = ParticleSystem(emissionRate = 3).apply {
+        val ps = ParticleSystem(emissionRate = 2).apply {
             var vec3 = Vec3()
             fun centeredRandom() = random() - 0.5f
             val amt = 0.1
-            velFunc = { vec3 = Vec3(centeredRandom() * amt, centeredRandom() * amt, centeredRandom() * amt); vec3 }
+            velFunc = { Vec3(centeredRandom() * amt, centeredRandom() * amt, centeredRandom() * amt).apply { vec3 = this } }
             accelFunc = { vec3.times(-0.01f) }
-
-            tintFunc = { Vec3(random(), random(), random()) }
         }
 
-        engine.run {
-            add(ps)
+        val ps1 = ParticleSystem().apply {
+            position = Vec3(0, 0, -10)
+        }
+
+        val ps2 = ParticleSystem().apply {
+            position = Vec3(0, 0, -20)
+            var i = 0
+            var vec3 = Vec3()
+            velFunc = { Vec3(cos(i / 180f * PI) / 10, sin(i++ / 180f * PI) / 10, 0).apply { vec3 = this } }
+            accelFunc = { vec3.times(-0.01f) }
+        }
+
+        val systems = listOf(ps, ps1, ps2).apply {
+            forEach {
+                it.tintFunc = { Vec3(random(), random(), random()) }
+            }
+        }
+
+        engine.add(ps)
+
+        engine.onKeyPressed = {
+            it.preventDefault()
+            when (it.which) {
+                // Tab
+                9 -> {
+                    index = if (index >= systems.size - 1) 0 else index + 1
+                    engine.clear()
+                    engine.add(systems[index])
+                }
+            }
         }
 
         engine.onUpdate = {
-            ps.position.y = sin(Engine.time)
-            ps.position.x = 5 * sin(Engine.time)
-            ps.position.z = 5 * cos(Engine.time)
+            ps.position.x = 5 * cos(Engine.time)
+            ps.position.y = 5 * sin(Engine.time)
+            ps.position.z = -5f
         }
     }
 

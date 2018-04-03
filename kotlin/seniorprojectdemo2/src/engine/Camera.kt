@@ -24,5 +24,5 @@ open class Camera: Entity() {
             invert()
         }
 
-    override fun update() {}
+    open override fun update() {}
 }

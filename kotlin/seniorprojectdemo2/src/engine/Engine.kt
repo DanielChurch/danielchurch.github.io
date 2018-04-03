@@ -60,15 +60,19 @@ class Engine(width: Int = 1280, height: Int = 720) {
             Dom.body(
                     glCanvas.apply {
                         className = "shrink"
-                        style.margin = "auto"
-                        style.marginTop = "100px"
-                        style.border = "3px solid #777"
-                        style.borderRadius = "50px"
-                        style.boxShadow = "0 4px 8px 0 rgba(0.7, 0.7, 0.7, 0.2), 0 6px 20px 0 rgba(0.7, 0.7, 0.7, 0.19);"
-                        style.transition = "transform: 1s"
+                        style.run {
+                            margin = "auto"
+                            this.width = "80vw"
+                            this.height = "80vh"
+                            marginTop = "8vh"
+                            border = "3px solid #777"
+                            borderRadius = "50px"
+                            boxShadow = "0 4px 8px 0 rgba(0.7, 0.7, 0.7, 0.2), 0 6px 20px 0 rgba(0.7, 0.7, 0.7, 0.19);"
+                            transition = "transform: 1s"
+                        }
                     }
             )
-            Dom.body().style.textAlign = "center"
+            Dom.body.style.textAlign = "center"
         }
         // Get the context
         val glContext = glCanvas.getContext("webgl") as WebGLRenderingContext
@@ -88,6 +92,12 @@ class Engine(width: Int = 1280, height: Int = 720) {
     fun add(obj: RenderingObject) {
         objects.add(obj)
     }
+
+    fun remove(obj: RenderingObject) {
+        objects.remove(obj)
+    }
+
+    fun clear() = objects.clear()
 
     fun setupCallbacks() {
         document.body!!.onkeydown = {

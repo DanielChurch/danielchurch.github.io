@@ -17,10 +17,10 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   var equals = Kotlin.equals;
   var clear = Kotlin.kotlin.dom.clear_asww5s$;
   var math = Kotlin.kotlin.math;
+  var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   var numberToDouble = Kotlin.numberToDouble;
   var Triple = Kotlin.kotlin.Triple;
   var Pair = Kotlin.kotlin.Pair;
-  var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var throwUPAE = Kotlin.throwUPAE;
   var ensureNotNull = Kotlin.ensureNotNull;
@@ -276,7 +276,7 @@ var SeniorProjectKotlin = function (_, Kotlin) {
       var closure$i_0 = closure$i;
       var closure$pauseDuration_0 = closure$pauseDuration;
       $receiver.className = 'sidenav';
-      $receiver.style.top = 'calc(50vh - ' + ((this$Main_0.demos_0.size * 38 | 0) + 10 | 0) + 'px + ' + (60 * closure$i_0.v | 0) + 'px)';
+      $receiver.style.top = 'calc(50vh - ' + (this$Main_0.demos_0.size * 38 | 0) + 'px + ' + (60 * closure$i_0.v | 0) + 'px)';
       $receiver.style.background = color;
       $receiver.onclick = Main$createNav$getNav$lambda$lambda(name, func, closure$pauseDuration_0, this$Main_0);
       return $receiver;
@@ -494,8 +494,9 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   }
   function Main$particleDemo$lambda$lambda(closure$centeredRandom, closure$amt, closure$vec3) {
     return function () {
-      closure$vec3.v = Vec3_init(closure$centeredRandom() * closure$amt, closure$centeredRandom() * closure$amt, closure$centeredRandom() * closure$amt);
-      return closure$vec3.v;
+      var $receiver = Vec3_init(closure$centeredRandom() * closure$amt, closure$centeredRandom() * closure$amt, closure$centeredRandom() * closure$amt);
+      closure$vec3.v = $receiver;
+      return $receiver;
     };
   }
   function Main$particleDemo$lambda$lambda_0(closure$vec3) {
@@ -503,20 +504,45 @@ var SeniorProjectKotlin = function (_, Kotlin) {
       return closure$vec3.v.times_mx4ult$(-0.01);
     };
   }
-  function Main$particleDemo$lambda$lambda_1() {
+  function Main$particleDemo$lambda$lambda_1(closure$i, closure$vec3) {
+    return function () {
+      var tmp$, tmp$_0;
+      var x = closure$i.v / 180.0 * math.PI;
+      tmp$ = Math_0.cos(x) / 10;
+      var x_0 = (tmp$_0 = closure$i.v, closure$i.v = tmp$_0 + 1 | 0, tmp$_0) / 180.0 * math.PI;
+      var $receiver = Vec3_init(tmp$, Math_0.sin(x_0) / 10, 0);
+      closure$vec3.v = $receiver;
+      return $receiver;
+    };
+  }
+  function Main$particleDemo$lambda$lambda_2(closure$vec3) {
+    return function () {
+      return closure$vec3.v.times_mx4ult$(-0.01);
+    };
+  }
+  function Main$particleDemo$lambda$lambda$lambda() {
     return Vec3_init(Math.random(), Math.random(), Math.random());
   }
-  function Main$particleDemo$lambda(closure$ps) {
+  function Main$particleDemo$lambda(closure$index, closure$systems, closure$engine) {
+    return function (it) {
+      it.preventDefault();
+      if (it.which === 9) {
+        closure$index.v = closure$index.v >= (closure$systems.size - 1 | 0) ? 0 : closure$index.v + 1 | 0;
+        closure$engine.clear();
+        closure$engine.add_3ifc4f$(closure$systems.get_za3lpa$(closure$index.v));
+      }
+      return Unit;
+    };
+  }
+  function Main$particleDemo$lambda_0(closure$ps) {
     return function () {
       var tmp$ = closure$ps.position;
       var x = Engine$Companion_getInstance().time;
-      tmp$.y = Math_0.sin(x);
+      tmp$.x = 5 * Math_0.cos(x);
       var tmp$_0 = closure$ps.position;
       var x_0 = Engine$Companion_getInstance().time;
-      tmp$_0.x = 5 * Math_0.sin(x_0);
-      var tmp$_1 = closure$ps.position;
-      var x_1 = Engine$Companion_getInstance().time;
-      tmp$_1.z = 5 * Math_0.cos(x_1);
+      tmp$_0.y = 5 * Math_0.sin(x_0);
+      closure$ps.position.z = -5.0;
       return Unit;
     };
   }
@@ -524,16 +550,35 @@ var SeniorProjectKotlin = function (_, Kotlin) {
     this.currentDemo_0 = 'particleDemo';
     var engine = new Engine();
     Engine$Companion_getInstance().camera = new FirstPersonCamera();
-    var $receiver = new ParticleSystem(void 0, void 0, 3);
+    var index = {v: 0};
+    var $receiver = new ParticleSystem(void 0, void 0, 2);
     var vec3 = {v: Vec3_init_0()};
     var centeredRandom = Main$particleDemo$lambda$centeredRandom;
     var amt = 0.1;
     $receiver.velFunc = Main$particleDemo$lambda$lambda(centeredRandom, amt, vec3);
     $receiver.accelFunc = Main$particleDemo$lambda$lambda_0(vec3);
-    $receiver.tintFunc = Main$particleDemo$lambda$lambda_1;
     var ps = $receiver;
+    var $receiver_0 = new ParticleSystem();
+    $receiver_0.position = Vec3_init(0, 0, -10);
+    var ps1 = $receiver_0;
+    var $receiver_1 = new ParticleSystem();
+    $receiver_1.position = Vec3_init(0, 0, -20);
+    var i = {v: 0};
+    var vec3_0 = {v: Vec3_init_0()};
+    $receiver_1.velFunc = Main$particleDemo$lambda$lambda_1(i, vec3_0);
+    $receiver_1.accelFunc = Main$particleDemo$lambda$lambda_2(vec3_0);
+    var ps2 = $receiver_1;
+    var $receiver_2 = listOf([ps, ps1, ps2]);
+    var tmp$;
+    tmp$ = $receiver_2.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      element.tintFunc = Main$particleDemo$lambda$lambda$lambda;
+    }
+    var systems = $receiver_2;
     engine.add_3ifc4f$(ps);
-    engine.onUpdate = Main$particleDemo$lambda(ps);
+    engine.onKeyPressed = Main$particleDemo$lambda(index, systems, engine);
+    engine.onUpdate = Main$particleDemo$lambda_0(ps);
   };
   function Main$solarDemo$createPlanet(texture, size, orbit, period) {
     return new Pair(new Sphere(void 0, ModelLoader$Companion_getInstance().loadTexture_61zpoe$('models/solar/' + texture + '_diffuse.jpg')), new Triple(numberToDouble(size) / 100, numberToDouble(orbit) / 100, numberToDouble(period) * 2));
@@ -908,14 +953,17 @@ var SeniorProjectKotlin = function (_, Kotlin) {
      else {
       var tmp$_1 = Dom$Companion_getInstance();
       glCanvas.className = 'shrink';
-      glCanvas.style.margin = 'auto';
-      glCanvas.style.marginTop = '100px';
-      glCanvas.style.border = '3px solid #777';
-      glCanvas.style.borderRadius = '50px';
-      glCanvas.style.boxShadow = '0 4px 8px 0 rgba(0.7, 0.7, 0.7, 0.2), 0 6px 20px 0 rgba(0.7, 0.7, 0.7, 0.19);';
-      glCanvas.style.transition = 'transform: 1s';
+      var $receiver = glCanvas.style;
+      $receiver.margin = 'auto';
+      $receiver.width = '80vw';
+      $receiver.height = '80vh';
+      $receiver.marginTop = '8vh';
+      $receiver.border = '3px solid #777';
+      $receiver.borderRadius = '50px';
+      $receiver.boxShadow = '0 4px 8px 0 rgba(0.7, 0.7, 0.7, 0.2), 0 6px 20px 0 rgba(0.7, 0.7, 0.7, 0.19);';
+      $receiver.transition = 'transform: 1s';
       tmp$_1.body_jiburq$([glCanvas]);
-      Dom$Companion_getInstance().body_jiburq$([]).style.textAlign = 'center';
+      Dom$Companion_getInstance().body.style.textAlign = 'center';
     }
     var glContext = Kotlin.isType(tmp$_0 = glCanvas.getContext('webgl'), WebGLRenderingContext) ? tmp$_0 : throwCCE();
     glCanvas.width = width;
@@ -927,6 +975,12 @@ var SeniorProjectKotlin = function (_, Kotlin) {
   };
   Engine.prototype.add_3ifc4f$ = function (obj) {
     this.objects_0.add_11rb$(obj);
+  };
+  Engine.prototype.remove_3ifc4f$ = function (obj) {
+    this.objects_0.remove_11rb$(obj);
+  };
+  Engine.prototype.clear = function () {
+    this.objects_0.clear();
   };
   function Engine$setupCallbacks$lambda(this$Engine) {
     return function (it) {
